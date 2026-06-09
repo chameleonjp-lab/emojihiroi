@@ -1,0 +1,1591 @@
+<!doctype html>
+<!-- emojihiroi_single_v2_5 / debug reviewed: mobile guards, countdown recovery, stale submit guard -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <title>絵文字拾い</title>
+  <style>
+:root {
+  --bg: #f7f3ec;
+  --card: #ffffff;
+  --text: #24211d;
+  --muted: #6d665e;
+  --line: #ded6ca;
+  --primary: #24211d;
+  --primary-text: #ffffff;
+  --secondary: #f1ebe2;
+  --danger: #d93025;
+  --danger-bg: #fff0ee;
+  --score-bg: #fff7dc;
+  --score-line: #ead795;
+  --hint: #0b74ff;
+  --hint-bg: #eaf3ff;
+  --ok: #138a3d;
+  --ok-bg: #ecfff3;
+  --warn: #9a6700;
+  --warn-bg: #fff8df;
+  --round-accent: #6b7cff;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+button,
+a,
+input {
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body.wrong-flash::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  background: rgba(217, 48, 37, 0.30);
+  animation: wrong-flash 170ms ease-out;
+}
+
+@keyframes wrong-flash {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(14px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
+}
+
+.screen.is-active { display: flex; }
+
+.screen-home.is-active,
+.screen-result.is-active,
+.screen-countdown.is-active {
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.card {
+  width: min(100%, 430px);
+  margin: 0 auto;
+  padding: 22px 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(36px, 12vw, 54px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.result-title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.best-score {
+  margin: 16px auto 14px;
+  padding: 11px 12px;
+  border: 1px solid var(--score-line);
+  border-radius: 16px;
+  background: var(--score-bg);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.lead {
+  margin: 0 auto 14px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.rule-box {
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid #e8e2da;
+  border-radius: 16px;
+  background: #faf8f5;
+  color: var(--muted);
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.58;
+}
+
+.rule-box p { margin: 0 0 8px; }
+.rule-box p:last-child { margin-bottom: 0; }
+
+.name-box {
+  display: grid;
+  gap: 7px;
+  margin: 0 0 14px;
+  text-align: left;
+}
+
+.name-box label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.name-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 800;
+  user-select: text;
+  -webkit-user-select: text;
+  touch-action: manipulation;
+}
+
+.name-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.name-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.button-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.button {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 900;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+.button-secondary {
+  border: 1px solid var(--line);
+  background: var(--secondary);
+  color: var(--text);
+}
+
+.button-link {
+  border: 1px solid #d8e2d2;
+  background: #f1f8ee;
+  color: #24401b;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.modal.is-open { display: flex; }
+
+.modal-card {
+  width: min(100%, 420px);
+  max-height: min(86vh, 680px);
+  overflow-y: auto;
+  padding: 18px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.modal-card h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+
+.modal-card ul {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  text-align: left;
+  line-height: 1.65;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.countdown-card {
+  width: min(100%, 430px);
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  margin: 0 auto;
+  padding: 22px 18px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.countdown-label {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.countdown-number {
+  min-height: 118px;
+  display: grid;
+  place-items: center;
+  font-size: clamp(72px, 26vw, 116px);
+  font-weight: 1000;
+  line-height: 1;
+}
+
+.countdown-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.screen-game {
+  align-items: stretch;
+  justify-content: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.game-shell {
+  width: min(100%, 430px);
+  min-height: calc(100vh - 28px);
+  min-height: calc(100dvh - 28px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.timer {
+  min-width: 94px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.retire-button {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.target-area {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  padding: 4px 8px 2px;
+  border-bottom: 4px solid var(--round-accent);
+  border-radius: 0 0 18px 18px;
+}
+
+.target-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+}
+
+.target-emoji {
+  height: clamp(42px, 12vw, 58px);
+  display: grid;
+  place-items: center;
+  font-size: clamp(38px, 13vw, 58px);
+  line-height: 1;
+}
+
+.target-stage {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.remaining-display {
+  padding: 5px 12px;
+  border: 2px solid var(--round-accent);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: clamp(18px, 5.4vw, 24px);
+  font-weight: 1000;
+  line-height: 1.2;
+}
+
+.board {
+  width: min(calc(100vw - 20px), calc(100dvh - 196px), 398px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  padding: 2px;
+  border-radius: 16px;
+  background: #d8d0c5;
+  box-shadow: var(--shadow);
+  --round-accent: #6b7cff;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.cell {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid var(--round-accent);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: clamp(20px, 7.2vw, 32px);
+  line-height: 1;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.cell:active { transform: scale(0.96); }
+
+.cell.is-cleared {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.34);
+  color: transparent;
+  cursor: default;
+}
+
+.cell.is-wrong-hint {
+  border-color: var(--danger);
+  animation: wrong-hint-pulse 520ms infinite alternate;
+}
+
+.cell.is-super-hint {
+  border-color: var(--hint);
+  animation: super-hint-pulse 260ms infinite alternate;
+}
+
+@keyframes wrong-hint-pulse {
+  from { box-shadow: 0 0 0 0 rgba(217, 48, 37, 0.12); }
+  to { box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.42); }
+}
+
+@keyframes super-hint-pulse {
+  from { box-shadow: 0 0 0 1px rgba(11, 116, 255, 0.25); }
+  to { box-shadow: 0 0 0 5px rgba(11, 116, 255, 0.65); }
+}
+
+.game-footer {
+  display: grid;
+  gap: 6px;
+  margin-top: auto;
+  padding-bottom: 2px;
+}
+
+.hint-button {
+  min-height: 44px;
+  border: 2px solid #a8ccff;
+  border-radius: 999px;
+  background: var(--hint-bg);
+  color: #094fba;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.penalty-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.result-status {
+  margin: 16px 0;
+  padding: 13px;
+  border: 1px solid #e6e2dc;
+  border-radius: 16px;
+  background: #faf8f5;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.result-status.is-retired {
+  border-color: #ffd0ca;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.score-list {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid #e8e3dc;
+  border-radius: 14px;
+  background: #fbfaf8;
+  font-size: 15px;
+}
+
+.score-row strong {
+  font-size: 18px;
+  text-align: right;
+}
+
+.score-row-final {
+  border-color: var(--score-line);
+  background: var(--score-bg);
+}
+
+.score-row-submit {
+  border-color: #dce8f7;
+  background: #f5f9ff;
+}
+
+.submit-ok { color: var(--ok); }
+.submit-warn { color: var(--warn); }
+.submit-ng { color: var(--danger); }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 1300;
+  max-width: calc(100vw - 28px);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(36, 33, 29, 0.94);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(18px);
+  transition: opacity 150ms ease, transform 150ms ease;
+  white-space: nowrap;
+}
+
+.toast.is-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-height: 670px) {
+  .screen {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .game-shell { gap: 5px; }
+
+  .target-emoji {
+    height: 40px;
+    font-size: 39px;
+  }
+
+  .target-area {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+
+  .target-stage { font-size: 12px; }
+
+  .remaining-display {
+    font-size: 18px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .board {
+    width: min(calc(100vw - 18px), calc(100dvh - 178px), 390px);
+  }
+
+  .hint-button { min-height: 40px; }
+}
+
+@media (max-width: 340px) {
+  .cell {
+    border-radius: 8px;
+    font-size: clamp(18px, 7vw, 26px);
+  }
+
+  .card {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <main id="app" class="app">
+    <section id="home-screen" class="screen screen-home is-active" aria-labelledby="home-title">
+      <div class="card">
+        <p class="eyebrow">8×8 絵文字さがし</p>
+        <h1 id="home-title" class="title">絵文字拾い</h1>
+
+        <div id="best-score" class="best-score" aria-live="polite">
+          ベストスコア：読み込み中
+        </div>
+
+        <p class="lead">
+          お題と同じ絵文字を探して、8個すべて拾おう。<br>
+          8種類すべて拾うまでのタイムを競うゲームです。
+        </p>
+
+        <div class="name-box">
+          <label for="player-name">名前（必須）</label>
+          <input id="player-name" class="name-input" type="text" inputmode="text" autocomplete="nickname" maxlength="10" placeholder="名前を入力">
+          <p class="name-help">ランキング登録に使います。10文字までです。</p>
+        </div>
+
+        <div class="rule-box">
+          <p>間違えると、結果で1回につき+5秒されます。</p>
+          <p>ヒントは何度でも使えますが、1回につき+45秒されます。</p>
+          <p>クリア時はランキングへ自動送信します。リタイアは送信しません。</p>
+        </div>
+
+        <div class="button-stack">
+          <button id="start-button" class="button button-primary" type="button">ゲーム開始</button>
+          <button id="rule-button" class="button button-secondary" type="button">ルール説明</button>
+          <button id="share-game-button" class="button button-secondary" type="button">ゲームをシェア</button>
+          <a class="button button-link" href="https://chameleonjp.codeberg.page/chameleonjp_lab/">他のゲームで遊ぶ</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="countdown-screen" class="screen screen-countdown" aria-labelledby="countdown-title">
+      <div class="countdown-card">
+        <p id="countdown-title" class="countdown-label">まもなく開始</p>
+        <div id="countdown-number" class="countdown-number">3</div>
+        <p class="countdown-note">カウントダウン中は、お題と盤面を表示しません。</p>
+      </div>
+    </section>
+
+    <section id="game-screen" class="screen screen-game" aria-labelledby="target-label">
+      <div class="game-shell">
+        <header class="game-header">
+          <div id="timer" class="timer" aria-live="polite">0.00秒</div>
+          <button id="retire-button" class="retire-button" type="button">リタイア</button>
+        </header>
+
+        <div id="target-area" class="target-area" aria-live="polite">
+          <p id="target-label" class="target-label">お題</p>
+          <div id="target-emoji" class="target-emoji" aria-label="現在のお題">🙂</div>
+          <div id="target-stage" class="target-stage">お題 1/8</div>
+          <div id="remaining-display" class="remaining-display">残り🙂×8個</div>
+        </div>
+
+        <div id="board" class="board" aria-label="絵文字の盤面"></div>
+
+        <footer class="game-footer">
+          <button id="hint-button" class="hint-button" type="button">ヒントを見る（+45秒）</button>
+          <p id="penalty-note" class="penalty-note">ヒント使用：0回 ｜ ヒント加算：+0秒</p>
+        </footer>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen screen-result" aria-labelledby="result-title">
+      <div class="card">
+        <p class="eyebrow">RESULT</p>
+        <h2 id="result-title" class="result-title">ゲーム結果</h2>
+
+        <div id="result-status" class="result-status">クリア！</div>
+
+        <div class="score-list">
+          <div class="score-row">
+            <span>名前</span>
+            <strong id="result-player">未入力</strong>
+          </div>
+          <div class="score-row">
+            <span>実際の秒数</span>
+            <strong id="actual-score">0.00秒</strong>
+          </div>
+          <div class="score-row">
+            <span>誤タップ</span>
+            <strong id="wrong-count">0回</strong>
+          </div>
+          <div class="score-row">
+            <span>ヒント</span>
+            <strong id="hint-penalty">0回（+0秒）</strong>
+          </div>
+          <div class="score-row score-row-submit">
+            <span>ランキング送信</span>
+            <strong id="submit-status">待機中</strong>
+          </div>
+          <div class="score-row score-row-final">
+            <span>最終秒数</span>
+            <strong id="final-score">0.00秒</strong>
+          </div>
+        </div>
+
+        <div class="button-stack">
+          <button id="share-result-button" class="button button-secondary" type="button">結果をシェア</button>
+          <button id="retry-button" class="button button-primary" type="button">もう一度</button>
+          <button id="home-button" class="button button-secondary" type="button">ゲーム終了</button>
+          <a class="button button-link" href="https://chameleonjp.codeberg.page/chameleonjp_lab/">他のゲームで遊ぶ</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="rule-modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rule-title">
+      <h2 id="rule-title">ルール説明</h2>
+      <ul>
+        <li>8×8の盤面から、お題と同じ絵文字だけを探してタップします。</li>
+        <li>1つのお題につき、同じ絵文字は8個あります。</li>
+        <li>お題を8個すべて拾うと、次のお題に変わります。</li>
+        <li>間違えると、結果で1回につき+5秒されます。</li>
+        <li>同じお題で5回間違えると、対象マスの縁が赤く点滅します。</li>
+        <li>ヒントボタンを使うと、対象マスの縁が2秒間光ります。1回につき+45秒です。</li>
+        <li>クリア時はランキングへ自動送信します。リタイアは送信しません。</li>
+        <li>ベストスコアはこのブラウザ内に保存されます。保存データを消すと記録が消える場合があります。</li>
+      </ul>
+      <button id="close-rule-button" class="button button-primary" type="button">閉じる</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">クリップボードにコピーしました</div>
+
+  <script>
+const GAME_TITLE = "絵文字拾い";
+const GAME_DESCRIPTION = "8×8の中から、お題の絵文字を探して全部拾うタイムアタックゲームです。";
+const GAME_SLUG = "emojihiroi";
+const CLIENT_VERSION = "emojihiroi_single_v2.5_20260610";
+const LAB_URL = "https://chameleonjp.codeberg.page/chameleonjp_lab/";
+
+const SUPABASE_URL = "https://mlpnjgezrnhdxsxolyzj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_drzcy0v97knU6FgjqSgBHw_0A9XPdFM";
+
+const EMOJIS = ["🙂", "🙁", "😐", "🫤", "😮", "😧", "😦", "😯"];
+const EACH_EMOJI_COUNT = 8;
+const WRONG_PENALTY_SECONDS = 5;
+const HINT_PENALTY_SECONDS = 45;
+const SCORE_SCALE = 100;
+const STORAGE_KEY = "emojihiroi_best_v1";
+const NAME_KEY = "emojihiroi_player_name_v1";
+const ROUND_COLORS = ["#6b7cff", "#f97316", "#14b8a6", "#a855f7", "#eab308", "#22c55e", "#ef4444", "#0ea5e9"];
+
+const screens = {
+  home: document.getElementById("home-screen"),
+  countdown: document.getElementById("countdown-screen"),
+  game: document.getElementById("game-screen"),
+  result: document.getElementById("result-screen"),
+};
+
+const bestScoreEl = document.getElementById("best-score");
+const playerNameInput = document.getElementById("player-name");
+const startButton = document.getElementById("start-button");
+const ruleButton = document.getElementById("rule-button");
+const shareGameButton = document.getElementById("share-game-button");
+const ruleModal = document.getElementById("rule-modal");
+const closeRuleButton = document.getElementById("close-rule-button");
+
+const countdownNumberEl = document.getElementById("countdown-number");
+
+const timerEl = document.getElementById("timer");
+const retireButton = document.getElementById("retire-button");
+const targetAreaEl = document.getElementById("target-area");
+const targetEmojiEl = document.getElementById("target-emoji");
+const targetStageEl = document.getElementById("target-stage");
+const remainingDisplayEl = document.getElementById("remaining-display");
+const boardEl = document.getElementById("board");
+const hintButton = document.getElementById("hint-button");
+const penaltyNoteEl = document.getElementById("penalty-note");
+
+const resultStatusEl = document.getElementById("result-status");
+const resultPlayerEl = document.getElementById("result-player");
+const actualScoreEl = document.getElementById("actual-score");
+const wrongCountEl = document.getElementById("wrong-count");
+const hintPenaltyEl = document.getElementById("hint-penalty");
+const submitStatusEl = document.getElementById("submit-status");
+const finalScoreEl = document.getElementById("final-score");
+const shareResultButton = document.getElementById("share-result-button");
+const retryButton = document.getElementById("retry-button");
+const homeButton = document.getElementById("home-button");
+const toastEl = document.getElementById("toast");
+
+let board = [];
+let targetOrder = [];
+let targetIndex = 0;
+let totalWrongCount = 0;
+let currentTargetWrongCount = 0;
+let hintPenaltySeconds = 0;
+let hintUseCount = 0;
+let superHintActive = false;
+let superHintTimerId = null;
+let startTime = 0;
+let timerId = null;
+let countdownTimerId = null;
+let isPlaying = false;
+let isCountingDown = false;
+let lastResult = null;
+let currentPlayerName = "";
+let submitSequence = 0;
+
+function isNativeInteractionAllowed(target) {
+  if (!target || typeof target.closest !== "function") return false;
+  return Boolean(target.closest("input, textarea, [contenteditable='true'], a"));
+}
+
+function installMobileGuards() {
+  document.addEventListener("dblclick", (event) => {
+    if (!isNativeInteractionAllowed(event.target)) {
+      event.preventDefault();
+    }
+  }, { passive: false });
+
+  document.addEventListener("contextmenu", (event) => {
+    if (!isNativeInteractionAllowed(event.target)) {
+      event.preventDefault();
+    }
+  });
+
+  ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+    document.addEventListener(eventName, (event) => {
+      event.preventDefault();
+    }, { passive: false });
+  });
+
+  document.addEventListener("touchmove", (event) => {
+    if (event.touches && event.touches.length > 1) {
+      event.preventDefault();
+    }
+  }, { passive: false });
+
+  boardEl.addEventListener("touchmove", (event) => {
+    event.preventDefault();
+  }, { passive: false });
+}
+
+function bindTap(element, handler) {
+  if (!element) return;
+
+  let lastRun = 0;
+
+  const run = (event) => {
+    const now = Date.now();
+
+    if (event && event.type === "click" && now - lastRun < 450) {
+      return;
+    }
+
+    lastRun = now;
+
+    if (event && typeof event.preventDefault === "function") {
+      event.preventDefault();
+    }
+
+    handler(event);
+  };
+
+  if (window.PointerEvent) {
+    element.addEventListener("pointerup", run, { passive: false });
+  } else {
+    element.addEventListener("touchend", run, { passive: false });
+  }
+
+  element.addEventListener("click", run);
+}
+
+function shuffle(source) {
+  const array = [...source];
+
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
+function formatSeconds(value) {
+  return `${value.toFixed(2)}秒`;
+}
+
+function getGameUrl() {
+  return window.location.href.split("#")[0];
+}
+
+function showScreen(name) {
+  Object.values(screens).forEach((screen) => {
+    screen.classList.remove("is-active");
+  });
+
+  screens[name].classList.add("is-active");
+}
+
+function showToast(message = "クリップボードにコピーしました") {
+  toastEl.textContent = message;
+  toastEl.classList.add("is-show");
+
+  window.setTimeout(() => {
+    toastEl.classList.remove("is-show");
+  }, 1000);
+}
+
+function readRecord() {
+  const fallback = {
+    bestSeconds: null,
+    hasRetire: false,
+  };
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return fallback;
+
+    const parsed = JSON.parse(raw);
+
+    return {
+      bestSeconds: typeof parsed.bestSeconds === "number" ? parsed.bestSeconds : null,
+      hasRetire: Boolean(parsed.hasRetire),
+    };
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function saveRecord(record) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+  } catch (error) {
+    // 保存できない環境でもゲームは動かす。
+  }
+}
+
+function savePlayerName(name) {
+  try {
+    localStorage.setItem(NAME_KEY, name);
+  } catch (error) {
+    // 保存できない環境でもゲームは動かす。
+  }
+}
+
+function loadPlayerName() {
+  try {
+    return localStorage.getItem(NAME_KEY) || "";
+  } catch (error) {
+    return "";
+  }
+}
+
+function saveClearScore(finalSeconds) {
+  const record = readRecord();
+
+  if (record.bestSeconds === null || finalSeconds < record.bestSeconds) {
+    record.bestSeconds = finalSeconds;
+  }
+
+  saveRecord(record);
+}
+
+function saveRetireResult() {
+  const record = readRecord();
+
+  if (record.bestSeconds === null) {
+    record.hasRetire = true;
+    saveRecord(record);
+  }
+}
+
+function updateBestScoreView() {
+  const record = readRecord();
+
+  if (record.bestSeconds !== null) {
+    bestScoreEl.textContent = `ベストスコア：${formatSeconds(record.bestSeconds)}`;
+    return;
+  }
+
+  if (record.hasRetire) {
+    bestScoreEl.textContent = "ベストスコア：リタイア";
+    return;
+  }
+
+  bestScoreEl.textContent = "ベストスコア：まだありません";
+}
+
+function getPlayerName() {
+  return playerNameInput.value.trim().slice(0, 10);
+}
+
+function validateAndSaveName() {
+  const name = getPlayerName();
+
+  if (!name) {
+    showToast("名前を入力してください");
+    playerNameInput.focus();
+    return null;
+  }
+
+  currentPlayerName = name;
+  savePlayerName(name);
+  return name;
+}
+
+function buildBoard() {
+  const cells = [];
+
+  EMOJIS.forEach((emoji) => {
+    for (let i = 0; i < EACH_EMOJI_COUNT; i += 1) {
+      cells.push({
+        emoji,
+        cleared: false,
+      });
+    }
+  });
+
+  return shuffle(cells);
+}
+
+function getCurrentTarget() {
+  return targetOrder[targetIndex];
+}
+
+function getRoundColor() {
+  return ROUND_COLORS[targetIndex % ROUND_COLORS.length];
+}
+
+function getRemainingCount(target = getCurrentTarget()) {
+  return board.filter((cell) => !cell.cleared && cell.emoji === target).length;
+}
+
+function applyRoundColor() {
+  const color = getRoundColor();
+  targetAreaEl.style.setProperty("--round-accent", color);
+  boardEl.style.setProperty("--round-accent", color);
+  remainingDisplayEl.style.borderColor = color;
+}
+
+function renderTarget() {
+  const target = getCurrentTarget();
+  const remaining = getRemainingCount(target);
+
+  applyRoundColor();
+  targetEmojiEl.textContent = target;
+  targetStageEl.textContent = `お題 ${targetIndex + 1}/8`;
+  remainingDisplayEl.textContent = `残り${target}×${remaining}個`;
+}
+
+function renderPenaltyNote() {
+  penaltyNoteEl.textContent = `ヒント使用：${hintUseCount}回 ｜ ヒント加算：+${hintPenaltySeconds}秒`;
+}
+
+function renderBoard() {
+  const target = getCurrentTarget();
+  const shouldShowWrongHint = currentTargetWrongCount >= 5;
+
+  boardEl.innerHTML = "";
+
+  board.forEach((cell, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "cell";
+    button.dataset.index = String(index);
+
+    if (cell.cleared) {
+      button.classList.add("is-cleared");
+      button.textContent = "";
+      button.setAttribute("aria-label", "空白マス");
+    } else {
+      button.textContent = cell.emoji;
+      button.setAttribute("aria-label", `${cell.emoji} のマス`);
+
+      if (shouldShowWrongHint && cell.emoji === target) {
+        button.classList.add("is-wrong-hint");
+      }
+
+      if (superHintActive && cell.emoji === target) {
+        button.classList.add("is-super-hint");
+      }
+    }
+
+    boardEl.appendChild(button);
+  });
+}
+
+function getElapsedSeconds() {
+  if (!startTime) return 0;
+  return (performance.now() - startTime) / 1000;
+}
+
+function updateTimer() {
+  timerEl.textContent = formatSeconds(getElapsedSeconds());
+}
+
+function startTimer() {
+  stopTimer();
+  startTime = performance.now();
+  updateTimer();
+  timerId = window.setInterval(updateTimer, 100);
+}
+
+function resumeTimerIfNeeded() {
+  if (!isPlaying || timerId !== null) return;
+  updateTimer();
+  timerId = window.setInterval(updateTimer, 100);
+}
+
+function stopTimer() {
+  if (timerId !== null) {
+    window.clearInterval(timerId);
+    timerId = null;
+  }
+}
+
+function stopCountdown() {
+  isCountingDown = false;
+
+  if (countdownTimerId !== null) {
+    window.clearTimeout(countdownTimerId);
+    countdownTimerId = null;
+  }
+}
+
+function cancelCountdownToHome() {
+  if (!isCountingDown) return;
+
+  stopCountdown();
+  showScreen("home");
+  showToast("カウントダウンを中止しました");
+}
+
+function stopSuperHint() {
+  superHintActive = false;
+
+  if (superHintTimerId !== null) {
+    window.clearTimeout(superHintTimerId);
+    superHintTimerId = null;
+  }
+}
+
+function flashWrongTap() {
+  document.body.classList.remove("wrong-flash");
+  void document.body.offsetWidth;
+  document.body.classList.add("wrong-flash");
+
+  window.setTimeout(() => {
+    document.body.classList.remove("wrong-flash");
+  }, 170);
+}
+
+function startCountdown() {
+  if (isCountingDown) return;
+
+  const name = validateAndSaveName();
+  if (!name) return;
+
+  stopCountdown();
+  stopTimer();
+  stopSuperHint();
+
+  board = [];
+  targetOrder = [];
+  targetIndex = 0;
+  totalWrongCount = 0;
+  currentTargetWrongCount = 0;
+  hintPenaltySeconds = 0;
+  hintUseCount = 0;
+  startTime = 0;
+  isPlaying = false;
+  isCountingDown = true;
+  lastResult = null;
+  submitSequence += 1;
+
+  showScreen("countdown");
+
+  const steps = ["3", "2", "1", "START"];
+  let stepIndex = 0;
+
+  const showNext = () => {
+    if (!isCountingDown) return;
+
+    countdownNumberEl.textContent = steps[stepIndex];
+    stepIndex += 1;
+
+    if (stepIndex >= steps.length) {
+      countdownTimerId = window.setTimeout(() => {
+        countdownTimerId = null;
+        isCountingDown = false;
+        startGame();
+      }, 520);
+      return;
+    }
+
+    countdownTimerId = window.setTimeout(showNext, 820);
+  };
+
+  showNext();
+}
+
+function startGame() {
+  stopCountdown();
+  stopSuperHint();
+
+  board = buildBoard();
+  targetOrder = shuffle(EMOJIS);
+  targetIndex = 0;
+  totalWrongCount = 0;
+  currentTargetWrongCount = 0;
+  hintPenaltySeconds = 0;
+  hintUseCount = 0;
+  lastResult = null;
+  isPlaying = true;
+
+  showScreen("game");
+  renderTarget();
+  renderPenaltyNote();
+  renderBoard();
+  startTimer();
+}
+
+function finishGame(isRetired) {
+  if (!isPlaying) return;
+
+  const actualSeconds = getElapsedSeconds();
+  const wrongPenaltySeconds = totalWrongCount * WRONG_PENALTY_SECONDS;
+  const finalSeconds = actualSeconds + wrongPenaltySeconds + hintPenaltySeconds;
+  const scoreForRanking = Math.round(finalSeconds * SCORE_SCALE);
+
+  isPlaying = false;
+  stopTimer();
+  stopSuperHint();
+
+  const submitId = ++submitSequence;
+
+  lastResult = {
+    submitId,
+    isRetired,
+    playerName: currentPlayerName,
+    actualSeconds,
+    wrongCount: totalWrongCount,
+    wrongPenaltySeconds,
+    hintUseCount,
+    hintPenaltySeconds,
+    finalSeconds,
+    scoreForRanking,
+    submitStatus: isRetired ? "リタイアのため送信なし" : "送信待ち",
+  };
+
+  if (isRetired) {
+    saveRetireResult();
+  } else {
+    saveClearScore(finalSeconds);
+  }
+
+  showResult(lastResult);
+
+  if (!isRetired) {
+    submitScoreToSupabase(lastResult);
+  }
+}
+
+function advanceTargetOrFinish() {
+  if (getRemainingCount() > 0) {
+    renderTarget();
+    renderBoard();
+    return;
+  }
+
+  targetIndex += 1;
+
+  if (targetIndex >= targetOrder.length) {
+    finishGame(false);
+    return;
+  }
+
+  currentTargetWrongCount = 0;
+  stopSuperHint();
+  renderTarget();
+  renderBoard();
+}
+
+function handleBoardTap(event) {
+  if (!isPlaying) return;
+
+  const cellButton = event.target.closest(".cell");
+  if (!cellButton) return;
+
+  const index = Number(cellButton.dataset.index);
+  const cell = board[index];
+
+  if (!cell || cell.cleared) return;
+
+  if (cell.emoji === getCurrentTarget()) {
+    cell.cleared = true;
+    advanceTargetOrFinish();
+    return;
+  }
+
+  totalWrongCount += 1;
+  currentTargetWrongCount += 1;
+
+  flashWrongTap();
+  renderBoard();
+}
+
+function useHint() {
+  if (!isPlaying) return;
+
+  hintUseCount += 1;
+  hintPenaltySeconds += HINT_PENALTY_SECONDS;
+  superHintActive = true;
+
+  renderPenaltyNote();
+  renderBoard();
+  showToast(`ヒント使用：+${HINT_PENALTY_SECONDS}秒`);
+
+  if (superHintTimerId !== null) {
+    window.clearTimeout(superHintTimerId);
+  }
+
+  superHintTimerId = window.setTimeout(() => {
+    superHintActive = false;
+    superHintTimerId = null;
+    renderBoard();
+  }, 2000);
+}
+
+function setSubmitStatus(text, statusClass = "") {
+  submitStatusEl.textContent = text;
+  submitStatusEl.className = statusClass;
+}
+
+function showResult(result) {
+  updateBestScoreView();
+
+  resultPlayerEl.textContent = result.playerName || "未入力";
+  actualScoreEl.textContent = formatSeconds(result.actualSeconds);
+  wrongCountEl.textContent = `${result.wrongCount}回（+${result.wrongPenaltySeconds}秒）`;
+  hintPenaltyEl.textContent = `${result.hintUseCount}回（+${result.hintPenaltySeconds}秒）`;
+
+  if (result.isRetired) {
+    resultStatusEl.textContent = "リタイア";
+    resultStatusEl.classList.add("is-retired");
+    finalScoreEl.textContent = "リタイア";
+    setSubmitStatus("送信なし（リタイア）", "submit-warn");
+  } else {
+    resultStatusEl.textContent = "クリア！";
+    resultStatusEl.classList.remove("is-retired");
+    finalScoreEl.textContent = formatSeconds(result.finalSeconds);
+    setSubmitStatus("送信中...", "submit-warn");
+  }
+
+  showScreen("result");
+}
+
+function isCurrentResult(result) {
+  return lastResult === result && result && result.submitId === submitSequence;
+}
+
+async function submitScoreToSupabase(result) {
+  if (!isCurrentResult(result)) return;
+
+  setSubmitStatus("送信中...", "submit-warn");
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_score`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+        "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+      },
+      body: JSON.stringify({
+        p_display_name: result.playerName,
+        p_game_slug: GAME_SLUG,
+        p_score: result.scoreForRanking,
+        p_client_version: CLIENT_VERSION,
+      }),
+    });
+
+    const data = await response.json().catch(() => null);
+
+    if (!isCurrentResult(result)) return;
+
+    if (!response.ok) {
+      const message = data && data.message ? data.message : "送信に失敗しました";
+      throw new Error(message);
+    }
+
+    const row = Array.isArray(data) ? data[0] : data;
+
+    if (row && row.accepted === false) {
+      setSubmitStatus("送信できませんでした", "submit-ng");
+      return;
+    }
+
+    const isNewBest = Boolean(row && row.is_new_best);
+    const playCount = row && typeof row.result_play_count === "number" ? row.result_play_count : null;
+
+    if (isNewBest) {
+      setSubmitStatus(playCount ? `送信完了（ベスト更新・${playCount}回目）` : "送信完了（ベスト更新）", "submit-ok");
+    } else {
+      setSubmitStatus(playCount ? `送信完了（${playCount}回目）` : "送信完了", "submit-ok");
+    }
+  } catch (error) {
+    console.error(error);
+
+    if (!isCurrentResult(result)) return;
+
+    setSubmitStatus("送信失敗（通信または設定を確認）", "submit-ng");
+  }
+}
+
+function buildGameShareText() {
+  return [
+    GAME_TITLE,
+    GAME_DESCRIPTION,
+    getGameUrl(),
+  ].join("\n");
+}
+
+function buildResultShareText() {
+  if (!lastResult) {
+    return buildGameShareText();
+  }
+
+  if (lastResult.isRetired) {
+    return [
+      `${GAME_TITLE} 結果`,
+      "",
+      `プレイヤー：${lastResult.playerName}`,
+      "結果：リタイア",
+      `経過秒数：${formatSeconds(lastResult.actualSeconds)}`,
+      `誤タップ：${lastResult.wrongCount}回`,
+      `ヒント：${lastResult.hintUseCount}回`,
+      "",
+      "8×8の絵文字拾いに挑戦！",
+      getGameUrl(),
+    ].join("\n");
+  }
+
+  return [
+    `${GAME_TITLE} 結果`,
+    "",
+    `プレイヤー：${lastResult.playerName}`,
+    `実際の秒数：${formatSeconds(lastResult.actualSeconds)}`,
+    `誤タップ：${lastResult.wrongCount}回（+${lastResult.wrongPenaltySeconds}秒）`,
+    `ヒント：${lastResult.hintUseCount}回（+${lastResult.hintPenaltySeconds}秒）`,
+    `最終秒数：${formatSeconds(lastResult.finalSeconds)}`,
+    "",
+    "8×8の絵文字拾いに挑戦！",
+    getGameUrl(),
+  ].join("\n");
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  textarea.style.top = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+}
+
+async function copyToClipboard(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      fallbackCopy(text);
+    }
+
+    showToast();
+  } catch (error) {
+    try {
+      fallbackCopy(text);
+      showToast();
+    } catch (fallbackError) {
+      showToast("コピーできませんでした");
+    }
+  }
+}
+
+function openRuleModal() {
+  ruleModal.classList.add("is-open");
+  ruleModal.setAttribute("aria-hidden", "false");
+}
+
+function closeRuleModal() {
+  ruleModal.classList.remove("is-open");
+  ruleModal.setAttribute("aria-hidden", "true");
+}
+
+bindTap(startButton, startCountdown);
+bindTap(retryButton, startCountdown);
+
+bindTap(homeButton, () => {
+  updateBestScoreView();
+  showScreen("home");
+});
+
+bindTap(retireButton, () => {
+  finishGame(true);
+});
+
+bindTap(boardEl, handleBoardTap);
+bindTap(hintButton, useHint);
+bindTap(ruleButton, openRuleModal);
+bindTap(closeRuleButton, closeRuleModal);
+
+bindTap(shareGameButton, () => {
+  copyToClipboard(buildGameShareText());
+});
+
+bindTap(shareResultButton, () => {
+  copyToClipboard(buildResultShareText());
+});
+
+ruleModal.addEventListener("click", (event) => {
+  if (event.target === ruleModal) {
+    closeRuleModal();
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  cancelCountdownToHome();
+  stopSuperHint();
+});
+
+window.addEventListener("pageshow", () => {
+  resumeTimerIfNeeded();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    cancelCountdownToHome();
+    return;
+  }
+
+  if (document.visibilityState === "visible") {
+    resumeTimerIfNeeded();
+    updateTimer();
+  }
+});
+
+installMobileGuards();
+playerNameInput.value = loadPlayerName();
+
+updateBestScoreView();
+showScreen("home");
+
+  </script>
+</body>
+</html>
