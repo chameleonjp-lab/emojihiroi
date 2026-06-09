@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- emojihiroi_index_v2_6_20260610 / renamed to avoid old-code confusion -->
+<!-- emojihiroi_index_v2_8_20260610_darkbrown_game / game screen dark brown background -->
 <html lang="ja">
 <head>
   <meta charset="utf-8">
@@ -8,26 +8,26 @@
   <title>絵文字拾い</title>
   <style>
 :root {
-  --bg: #f7f3ec;
+  --bg: #f5f0ff;
   --card: #ffffff;
-  --text: #24211d;
-  --muted: #6d665e;
-  --line: #ded6ca;
-  --primary: #24211d;
+  --text: #241033;
+  --muted: #6f5b82;
+  --line: #d9c8ef;
+  --primary: #6d28d9;
   --primary-text: #ffffff;
-  --secondary: #f1ebe2;
+  --secondary: #efe7ff;
   --danger: #d93025;
   --danger-bg: #fff0ee;
-  --score-bg: #fff7dc;
-  --score-line: #ead795;
-  --hint: #0b74ff;
-  --hint-bg: #eaf3ff;
+  --score-bg: #f1e7ff;
+  --score-line: #c8a8ff;
+  --hint: #7c3aed;
+  --hint-bg: #f3e8ff;
   --ok: #138a3d;
   --ok-bg: #ecfff3;
   --warn: #9a6700;
   --warn-bg: #fff8df;
-  --round-accent: #6b7cff;
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  --round-accent: #7c3aed;
+  --shadow: 0 14px 32px rgba(76, 29, 149, 0.13);
 }
 
 * { box-sizing: border-box; }
@@ -154,9 +154,9 @@ body.wrong-flash::after {
 .rule-box {
   margin: 0 0 14px;
   padding: 12px;
-  border: 1px solid #e8e2da;
+  border: 1px solid #dfd0f4;
   border-radius: 16px;
-  background: #faf8f5;
+  background: #fbf8ff;
   color: var(--muted);
   text-align: left;
   font-size: 13px;
@@ -239,9 +239,9 @@ body.wrong-flash::after {
 }
 
 .button-link {
-  border: 1px solid #d8e2d2;
-  background: #f1f8ee;
-  color: #24401b;
+  border: 1px solid #d8c5ff;
+  background: #f0e9ff;
+  color: #4c1d95;
 }
 
 .modal {
@@ -421,7 +421,7 @@ body.wrong-flash::after {
   gap: 2px;
   padding: 2px;
   border-radius: 16px;
-  background: #d8d0c5;
+  background: #d7c6ef;
   box-shadow: var(--shadow);
   --round-accent: #6b7cff;
   touch-action: none;
@@ -488,10 +488,10 @@ body.wrong-flash::after {
 
 .hint-button {
   min-height: 44px;
-  border: 2px solid #a8ccff;
+  border: 2px solid #c4b5fd;
   border-radius: 999px;
   background: var(--hint-bg);
-  color: #094fba;
+  color: #5b21b6;
   font-weight: 1000;
   cursor: pointer;
 }
@@ -507,9 +507,9 @@ body.wrong-flash::after {
 .result-status {
   margin: 16px 0;
   padding: 13px;
-  border: 1px solid #e6e2dc;
+  border: 1px solid #dfd0f4;
   border-radius: 16px;
-  background: #faf8f5;
+  background: #fbf8ff;
   font-size: 25px;
   font-weight: 900;
 }
@@ -532,9 +532,9 @@ body.wrong-flash::after {
   justify-content: space-between;
   gap: 12px;
   padding: 11px 12px;
-  border: 1px solid #e8e3dc;
+  border: 1px solid #e3d5f7;
   border-radius: 14px;
-  background: #fbfaf8;
+  background: #fcf9ff;
   font-size: 15px;
 }
 
@@ -549,8 +549,8 @@ body.wrong-flash::after {
 }
 
 .score-row-submit {
-  border-color: #dce8f7;
-  background: #f5f9ff;
+  border-color: #d8c7f4;
+  background: #f7f2ff;
 }
 
 .submit-ok { color: var(--ok); }
@@ -626,13 +626,96 @@ body.wrong-flash::after {
   }
 }
 
+  
+.button:disabled,
+.hint-button:disabled,
+.retire-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+  
+/* v2.8: プレイ中の目の疲れを下げるため、ゲーム画面だけ暗い茶色へ変更 */
+.screen-game {
+  background:
+    radial-gradient(circle at top, rgba(124, 58, 237, 0.18), transparent 38%),
+    #2a211c;
+  color: #f6efe8;
+}
+
+.screen-game .game-shell {
+  color: #f6efe8;
+}
+
+.screen-game .timer {
+  background: #3a2c25;
+  border-color: #665044;
+  color: #f8efe5;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+}
+
+.screen-game .target-area {
+  background: rgba(58, 44, 37, 0.78);
+  border-left: 1px solid rgba(209, 184, 162, 0.25);
+  border-right: 1px solid rgba(209, 184, 162, 0.25);
+}
+
+.screen-game .target-label,
+.screen-game .target-stage,
+.screen-game .penalty-note {
+  color: #d8c5b4;
+}
+
+.screen-game .remaining-display {
+  background: #3a2c25;
+  color: #fff7ef;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.screen-game .board {
+  background: #1f1814;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+}
+
+.screen-game .cell {
+  background: #efe3d4;
+  color: #251812;
+  border-color: var(--round-accent);
+}
+
+.screen-game .cell.is-cleared {
+  background: rgba(91, 67, 55, 0.36);
+  border-color: rgba(146, 111, 92, 0.32);
+  color: transparent;
+}
+
+.screen-game .retire-button {
+  background: #4a2823;
+  color: #ffd2cc;
+  border: 1px solid #7d3c33;
+}
+
+.screen-game .hint-button {
+  background: #3a2c25;
+  border-color: #9b7ee8;
+  color: #e8dcff;
+}
+
+.screen-game .cell.is-wrong-hint {
+  border-color: #ff8a78;
+}
+
+.screen-game .cell.is-super-hint {
+  border-color: #d6c4ff;
+}
+
   </style>
 </head>
 <body>
   <main id="app" class="app">
     <section id="home-screen" class="screen screen-home is-active" aria-labelledby="home-title">
       <div class="card">
-        <p class="eyebrow">8×8 絵文字さがし</p>
+        <p class="eyebrow">8×8 絵文字拾い</p>
         <h1 id="home-title" class="title">絵文字拾い</h1>
 
         <div id="best-score" class="best-score" aria-live="polite">
@@ -763,7 +846,7 @@ body.wrong-flash::after {
 const GAME_TITLE = "絵文字拾い";
 const GAME_DESCRIPTION = "8×8の中から、お題の絵文字を探して全部拾うタイムアタックゲームです。";
 const GAME_SLUG = "emojihiroi";
-const CLIENT_VERSION = "emojihiroi_single_v2.5_20260610";
+const CLIENT_VERSION = "emojihiroi_single_v2.8_20260610";
 const LAB_URL = "https://chameleonjp.codeberg.page/chameleonjp_lab/";
 
 const SUPABASE_URL = "https://mlpnjgezrnhdxsxolyzj.supabase.co";
@@ -776,7 +859,7 @@ const HINT_PENALTY_SECONDS = 45;
 const SCORE_SCALE = 100;
 const STORAGE_KEY = "emojihiroi_best_v1";
 const NAME_KEY = "emojihiroi_player_name_v1";
-const ROUND_COLORS = ["#6b7cff", "#f97316", "#14b8a6", "#a855f7", "#eab308", "#22c55e", "#ef4444", "#0ea5e9"];
+const ROUND_COLORS = ["#6d28d9", "#7c3aed", "#8b5cf6", "#9333ea", "#a855f7", "#c084fc", "#5b21b6", "#4c1d95"];
 
 const screens = {
   home: document.getElementById("home-screen"),
@@ -1562,6 +1645,7 @@ ruleModal.addEventListener("click", (event) => {
 window.addEventListener("pagehide", () => {
   cancelCountdownToHome();
   stopSuperHint();
+  stopTimer();
 });
 
 window.addEventListener("pageshow", () => {
