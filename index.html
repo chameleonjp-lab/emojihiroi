@@ -727,7 +727,7 @@ body.wrong-flash::after {
           8種類すべて拾うまでのタイムを競うゲームです。
         </p>
 
-        <div class="audio-settings"><label for="soundToggle">効果音</label><button id="soundToggle" class="button button-secondary" type="button" aria-pressed="true">オン</button><label for="soundVolume">音量</label><input id="soundVolume" type="range" min="0" max="1" step="0.05" value="0.5"></div><div class="name-box">
+        <div class="language-setting"><label for="languageSelect">言語</label><select id="languageSelect"></select></div><div class="audio-settings"><label for="soundToggle">効果音</label><button id="soundToggle" class="button button-secondary" type="button" aria-pressed="true">オン</button><label for="soundVolume">音量</label><input id="soundVolume" type="range" min="0" max="1" step="0.05" value="0.5"></div><div class="name-box">
           <label for="player-name">名前（任意・10文字まで）</label>
           <input id="player-name" class="name-input" type="text" inputmode="text" autocomplete="nickname" placeholder="名前を入力">
           <p class="name-help">名前を入力すると、名前と記録がランキングに公開されます。空欄でも遊べます。</p>
@@ -849,6 +849,7 @@ body.wrong-flash::after {
 button.common-x-share { background:#000 !important; color:#fff !important; border:1px solid #555; white-space:normal; overflow-wrap:anywhere; min-height:44px; padding:12px 16px; line-height:1.4; }
 .common-ranking-link { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:44px; padding:12px 16px; border:1px solid currentColor; border-radius:10px; color:inherit; text-decoration:none; white-space:normal; overflow-wrap:anywhere; line-height:1.4; }
 #commonShareFallback { box-sizing:border-box; width:min(92vw,32rem); max-height:85dvh; overflow:auto; border:1px solid #777; border-radius:12px; padding:20px; background:#fff; color:#111; }
+.language-setting{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center}.language-setting select{width:100%;min-height:44px;font:inherit}.title{overflow-wrap:anywhere}.score-row strong{overflow-wrap:anywhere}
 .audio-settings{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;margin:16px 0}.audio-settings input{width:100%;min-height:44px}
 #result-ranking li{overflow-wrap:anywhere;margin:8px 0}#submission-retry,#ranking-retry{margin-top:16px}
 #commonShareFallback::backdrop { background:#0009; }
@@ -863,67 +864,181 @@ button.common-x-share { background:#000 !important; color:#fff !important; borde
   <button id="commonShareCopy" type="button">コピー</button>
   <button id="commonShareClose" type="button">閉じる</button>
 </dialog>
+<script id="localeData" type="application/json">{"source":["絵文字拾い","8×8 絵文字拾い","ベストスコア：読み込み中","お題と同じ絵文字を探して、8個すべて拾おう。","8種類すべて拾うまでのタイムを競うゲームです。","効果音","オン","音量","名前（任意・10文字まで）","名前を入力","名前を入力すると、名前と記録がランキングに公開されます。空欄でも遊べます。","間違えると、結果で1回につき+5秒されます。","ヒントは何度でも使えますが、1回につき+45秒されます。","開始時に名前があるプレイのクリア結果をランキングへ自動送信します。名前なしとリタイアは送信しません。","未送信の記録を再送","ゲーム開始","ルール説明","Xでシェア","ランキング","他のゲームで遊ぶ","まもなく開始","カウントダウン中は、お題と盤面を表示しません。","0.00秒","リタイア","お題","現在のお題","お題 1/8","残り🙂×8個","絵文字の盤面","ヒントを見る（+45秒）","ヒント使用：0回 ｜ ヒント加算：+0秒","ゲーム結果","クリア！","名前","未入力","実際の秒数","誤タップ","0回","ヒント","0回（+0秒）","ランキング送信","待機中","最終秒数","もう一度","ゲーム終了","送信を再試行","ランキングを再取得","8×8の盤面から、お題と同じ絵文字だけを探してタップします。","1つのお題につき、同じ絵文字は8個あります。","お題を8個すべて拾うと、次のお題に変わります。","同じお題で5回間違えると、対象マスの縁が赤く点滅します。","ヒントボタンを使うと、対象マスの縁が2秒間光ります。1回につき+45秒です。","ベストスコアはこのブラウザ内に保存されます。保存データを消すと記録が消える場合があります。","閉じる","クリップボードにコピーしました","共有文をコピー","Xを開けない場合は、本文とURLをコピーして投稿できます。","共有する本文とURL","コピー","コピーしました。投稿はXで確認してください。","本文を選択して手動でコピーしてください。","オフ","8×8の中から、お題の絵文字を探して全部拾うタイムアタックゲームです。","{0}秒","ベストスコア：{0}","ベストスコア：リタイア","ベストスコア：まだありません","お題 {0}/8","残り{0}×{1}個","ヒント使用：{0}回 ｜ ヒント加算：+{1}秒","空白マス","{0} のマス","カウントダウンを中止しました","START","リタイアのため送信なし","送信待ち","ヒント使用：+{0}秒","{0}回（+{1}秒）","送信なし（リタイア）","送信中...","名前なしでプレイしたため、この結果はランキングへ送信しません。","記録は送信待ちです。同じ記録を再送できます。","送信完了","送信に失敗しました。今回の結果は保持されています。","記録を送信できませんでした。今回の結果は保持されています。","読み込み中...","まだ記録がありません。","ランキングを取得できませんでした。「ランキングを再取得」で再試行できます。","{0} 結果","結果：リタイア","経過秒数：{0}","誤タップ：{0}回","ヒント：{0}回","8×8の絵文字拾いに挑戦！","実際の秒数：{0}","誤タップ：{0}回（+{1}秒）","ヒント：{0}回（+{1}秒）","最終秒数：{0}","コピーできませんでした","言語"],"catalogs":{"ja":["絵文字拾い","8×8 絵文字拾い","ベストスコア：読み込み中","お題と同じ絵文字を探して、8個すべて拾おう。","8種類すべて拾うまでのタイムを競うゲームです。","効果音","オン","音量","名前（任意・10文字まで）","名前を入力","名前を入力すると、名前と記録がランキングに公開されます。空欄でも遊べます。","間違えると、結果で1回につき+5秒されます。","ヒントは何度でも使えますが、1回につき+45秒されます。","開始時に名前があるプレイのクリア結果をランキングへ自動送信します。名前なしとリタイアは送信しません。","未送信の記録を再送","ゲーム開始","ルール説明","Xでシェア","ランキング","他のゲームで遊ぶ","まもなく開始","カウントダウン中は、お題と盤面を表示しません。","0.00秒","リタイア","お題","現在のお題","お題 1/8","残り🙂×8個","絵文字の盤面","ヒントを見る（+45秒）","ヒント使用：0回 ｜ ヒント加算：+0秒","ゲーム結果","クリア！","名前","未入力","実際の秒数","誤タップ","0回","ヒント","0回（+0秒）","ランキング送信","待機中","最終秒数","もう一度","ゲーム終了","送信を再試行","ランキングを再取得","8×8の盤面から、お題と同じ絵文字だけを探してタップします。","1つのお題につき、同じ絵文字は8個あります。","お題を8個すべて拾うと、次のお題に変わります。","同じお題で5回間違えると、対象マスの縁が赤く点滅します。","ヒントボタンを使うと、対象マスの縁が2秒間光ります。1回につき+45秒です。","ベストスコアはこのブラウザ内に保存されます。保存データを消すと記録が消える場合があります。","閉じる","クリップボードにコピーしました","共有文をコピー","Xを開けない場合は、本文とURLをコピーして投稿できます。","共有する本文とURL","コピー","コピーしました。投稿はXで確認してください。","本文を選択して手動でコピーしてください。","オフ","8×8の中から、お題の絵文字を探して全部拾うタイムアタックゲームです。","{0}秒","ベストスコア：{0}","ベストスコア：リタイア","ベストスコア：まだありません","お題 {0}/8","残り{0}×{1}個","ヒント使用：{0}回 ｜ ヒント加算：+{1}秒","空白マス","{0} のマス","カウントダウンを中止しました","START","リタイアのため送信なし","送信待ち","ヒント使用：+{0}秒","{0}回（+{1}秒）","送信なし（リタイア）","送信中...","名前なしでプレイしたため、この結果はランキングへ送信しません。","記録は送信待ちです。同じ記録を再送できます。","送信完了","送信に失敗しました。今回の結果は保持されています。","記録を送信できませんでした。今回の結果は保持されています。","読み込み中...","まだ記録がありません。","ランキングを取得できませんでした。「ランキングを再取得」で再試行できます。","{0} 結果","結果：リタイア","経過秒数：{0}","誤タップ：{0}回","ヒント：{0}回","8×8の絵文字拾いに挑戦！","実際の秒数：{0}","誤タップ：{0}回（+{1}秒）","ヒント：{0}回（+{1}秒）","最終秒数：{0}","コピーできませんでした","言語"],"en":["Emoji Hunt","8×8 Emoji Hunt","Best time: loading","Find all 8 copies of the target emoji.","Race to collect all 8 types of emoji.","Sound effects","On","Volume","Name (optional, up to 10 characters)","Enter a name","Enter a name to publish your name and score on the leaderboard. You can play with this field blank.","Each wrong tap adds 5 seconds to your final time.","Hints are unlimited, but each one adds 45 seconds.","Completed runs are submitted automatically if you entered a name before starting. Guest runs and retired runs are not submitted.","Retry pending scores","Start game","How to play","Share on X","Leaderboard","Play other games","Starting soon","The target and board stay hidden during the countdown.","0.00 s","Retire","Target","Current target","Target 1/8","🙂 × 8 remaining","Emoji board","Show hint (+45 s)","Hints: 0 | Hint penalty: +0 s","Game result","Completed!","Name","Not entered","Elapsed time","Wrong taps","0 times","Hints","0 times (+0 s)","Score submission","Waiting","Final time","Play again","Back to home","Retry submission","Reload leaderboard","Find and tap only the target emoji on the 8×8 board.","There are 8 copies of each target emoji.","Collect all 8 copies to move to the next target.","After 5 wrong taps on the same target, matching cells flash red around the edges.","A hint lights up the edges of matching cells for 2 seconds. Each hint adds 45 seconds.","Your best time is saved in this browser. Clearing browser data may erase it.","Close","Copied to clipboard","Copy share text","If X will not open, copy the text and URL to make your post.","Share text and URL","Copy","Copied. Review your post on X.","Select the text and copy it manually.","Off","Find and collect every target emoji on an 8×8 board in this time trial.","{0} s","Best time: {0}","Best result: retired","Best time: no record yet","Target {0}/8","{0} × {1} remaining","Hints: {0} | Hint penalty: +{1} s","Empty cell","Cell with {0}","Countdown cancelled","START","Not submitted: retired","Waiting to submit","Hint used: +{0} s","{0} times (+{1} s)","Not submitted (retired)","Submitting...","You played without a name, so this result will not be submitted to the leaderboard.","Your score is pending. You can retry the same result.","Score submitted","Could not submit the score. Your result is still here.","The score could not be accepted. Your result is still here.","Loading...","No records yet.","Could not load the leaderboard. Use “Reload leaderboard” to try again.","{0} result","Result: retired","Elapsed time: {0}","Wrong taps: {0}","Hints: {0}","Try the 8×8 Emoji Hunt!","Elapsed time: {0}","Wrong taps: {0} (+{1} s)","Hints: {0} (+{1} s)","Final time: {0}","Could not copy","Language"],"es":["絵文字拾い","絵文字拾い · tablero 8×8","Mejor tiempo: cargando","Busca el emoji indicado y recoge los 8 iguales.","Compite por recoger los 8 tipos de emoji en el menor tiempo posible.","Efectos de sonido","Activados","Volumen","Nombre (opcional, hasta 10 caracteres)","Escribe un nombre","Si escribes un nombre, tu nombre y tu resultado aparecerán en la clasificación. También puedes jugar sin nombre.","Cada toque incorrecto añade 5 segundos al tiempo final.","Puedes usar pistas tantas veces como quieras; cada una añade 45 segundos.","Si empiezas con un nombre, el resultado de una partida completada se envía automáticamente. Las partidas sin nombre o abandonadas no se envían.","Reenviar resultados pendientes","Empezar","Cómo jugar","Compartir en X","Clasificación","Jugar a otros juegos","A punto de empezar","El objetivo y el tablero se ocultan durante la cuenta atrás.","0,00 s","Abandonar","Objetivo","Objetivo actual","Objetivo 1/8","Quedan 8 × 🙂","Tablero de emojis","Ver pista (+45 s)","Pistas: 0 | Penalización: +0 s","Resultado","¡Completado!","Nombre","Sin nombre","Tiempo real","Toques incorrectos","0 veces","Pistas","0 veces (+0 s)","Envío a la clasificación","En espera","Tiempo final","Volver a jugar","Salir","Reintentar envío","Actualizar clasificación","Busca y toca solo los emojis iguales al objetivo en el tablero de 8×8.","Hay 8 emojis iguales para cada objetivo.","Cuando recojas los 8, aparecerá el siguiente objetivo.","Tras 5 errores con el mismo objetivo, los bordes de las casillas correctas parpadearán en rojo.","Una pista ilumina los bordes de las casillas correctas durante 2 segundos y añade 45 segundos al tiempo final.","Tu mejor tiempo se guarda en este navegador. Al borrar sus datos, podrías perderlo.","Cerrar","Copiado al portapapeles","Copiar texto para compartir","Si no se abre X, puedes copiar el texto y la URL para publicarlos.","Texto y URL para compartir","Copiar","Copiado. Revisa la publicación en X.","Selecciona el texto y cópialo manualmente.","Desactivados","Encuentra y recoge todos los emojis indicados en un tablero de 8×8 lo más rápido posible.","{0} s","Mejor tiempo: {0}","Mejor tiempo: abandonado","Mejor tiempo: todavía no hay ninguno","Objetivo {0}/8","Quedan {1} × {0}","Pistas: {0} | Penalización: +{1} s","Casilla vacía","Casilla de {0}","Cuenta atrás cancelada","¡YA!","Sin envío: partida abandonada","Pendiente de envío","Pistas: +{0} s","{0} veces (+{1} s)","Sin envío (abandono)","Enviando...","Jugaste sin nombre; este resultado no se enviará a la clasificación.","Este resultado está pendiente. Puedes reenviar el mismo resultado.","Enviado","Error de envío. Se conserva el resultado de esta partida.","No se pudo enviar el resultado. Se conserva el resultado de esta partida.","Cargando...","Todavía no hay resultados.","No se pudo cargar la clasificación. Pulsa «Actualizar clasificación» para reintentarlo.","Resultado de {0}","Resultado: abandono","Tiempo transcurrido: {0}","Toques incorrectos: {0}","Pistas: {0}","¡Prueba 絵文字拾い en un tablero de 8×8!","Tiempo real: {0}","Toques incorrectos: {0} (+{1} s)","Pistas: {0} (+{1} s)","Tiempo final: {0}","No se pudo copiar","Idioma"],"pt-BR":["絵文字拾い","絵文字拾い · tabuleiro 8×8","Melhor tempo: carregando","Encontre o emoji indicado e recolha os 8 iguais.","Recolha os 8 tipos de emoji no menor tempo possível.","Efeitos sonoros","Ligados","Volume","Nome (opcional, até 10 caracteres)","Digite um nome","Se você digitar um nome, seu nome e seu resultado serão publicados no ranking. Você também pode jogar sem nome.","Cada toque errado acrescenta 5 segundos ao tempo final.","Você pode usar dicas quantas vezes quiser, mas cada uma acrescenta 45 segundos.","Se você começar com um nome, o resultado de uma partida concluída será enviado automaticamente. Partidas sem nome ou abandonadas não são enviadas.","Reenviar resultados pendentes","Começar","Como jogar","Compartilhar no X","Ranking","Jogar outros jogos","Vai começar","O emoji indicado e o tabuleiro ficam ocultos durante a contagem regressiva.","0,00 s","Desistir","Alvo","Alvo atual","Alvo 1/8","Restam 8 × 🙂","Tabuleiro de emojis","Ver dica (+45 s)","Dicas: 0 | Acréscimo: +0 s","Resultado","Concluído!","Nome","Sem nome","Tempo real","Toques errados","0 vezes","Dicas","0 vezes (+0 s)","Envio ao ranking","Aguardando","Tempo final","Jogar novamente","Sair","Tentar enviar novamente","Recarregar ranking","No tabuleiro 8×8, encontre e toque apenas nos emojis iguais ao alvo.","Existem 8 emojis iguais para cada alvo.","Depois de recolher os 8, você passa para o próximo alvo.","Após 5 erros com o mesmo alvo, as bordas das casas corretas piscam em vermelho.","Uma dica ilumina as bordas das casas corretas por 2 segundos e acrescenta 45 segundos ao tempo final.","Seu melhor tempo é salvo neste navegador. Ele pode ser perdido se você apagar os dados do navegador.","Fechar","Copiado para a área de transferência","Copiar texto para compartilhar","Se o X não abrir, você pode copiar o texto e a URL para publicar.","Texto e URL para compartilhar","Copiar","Copiado. Confira a publicação no X.","Selecione o texto e copie manualmente.","Desligados","Encontre e recolha todos os emojis indicados em um tabuleiro 8×8 o mais rápido possível.","{0} s","Melhor tempo: {0}","Melhor tempo: desistência","Melhor tempo: ainda não há registro","Alvo {0}/8","Restam {1} × {0}","Dicas: {0} | Acréscimo: +{1} s","Casa vazia","Casa com {0}","Contagem regressiva cancelada","JÁ!","Não enviado: partida abandonada","Envio pendente","Dicas: +{0} s","{0} vezes (+{1} s)","Não enviado (desistência)","Enviando...","Você jogou sem nome. Este resultado não será enviado ao ranking.","Este resultado está aguardando envio. Você pode reenviar o mesmo resultado.","Enviado","Falha no envio. O resultado desta partida foi mantido.","Não foi possível enviar o resultado. O resultado desta partida foi mantido.","Carregando...","Ainda não há resultados.","Não foi possível carregar o ranking. Use “Recarregar ranking” para tentar novamente.","Resultado de {0}","Resultado: desistência","Tempo decorrido: {0}","Toques errados: {0}","Dicas: {0}","Experimente 絵文字拾い em um tabuleiro 8×8!","Tempo real: {0}","Toques errados: {0} (+{1} s)","Dicas: {0} (+{1} s)","Tempo final: {0}","Não foi possível copiar","Idioma"],"zh-Hans":["表情搜集","8×8 表情搜集","最佳用时：加载中","找出目标表情，把相同的8个全部收集起来。","比一比谁能更快收集完全部8种表情。","音效","开启","音量","名字（选填，最多10个字符）","输入名字","填写名字后，名字和成绩会公开显示在排行榜上。留空也能游玩。","每次点错都会在最终用时中增加5秒。","提示次数不限，但每次会增加45秒。","开始时填写了名字的通关成绩会自动提交到排行榜。未填写名字或中途退出的成绩不会提交。","重新提交待发送的成绩","开始游戏","玩法说明","分享到X","排行榜","玩其他游戏","即将开始","倒计时期间不会显示目标和棋盘。","0.00秒","退出本局","目标","当前目标","目标 1/8","剩余🙂×8个","表情棋盘","查看提示（+45秒）","提示：0次｜提示加时：+0秒","游戏结果","完成！","名字","未填写","实际用时","点错次数","0次","提示","0次（+0秒）","成绩提交","等待中","最终用时","再玩一次","返回主页","重新提交","重新加载排行榜","在8×8棋盘中找出并点击与目标相同的表情。","每种目标表情都有8个。","收集完目标的8个表情后，会切换到下一个目标。","同一目标下点错5次后，正确格子的边缘会闪红光。","点击提示会让正确格子的边缘亮起2秒。每次增加45秒。","最佳成绩保存在此浏览器中。清除浏览器数据可能会删除记录。","关闭","已复制到剪贴板","复制分享文字","如果无法打开X，可以复制文字和网址后发帖。","分享文字和网址","复制","已复制。请在X上确认发帖。","请选择文字并手动复制。","关闭","在8×8棋盘中找出并收集全部目标表情的计时挑战。","{0}秒","最佳用时：{0}","最佳结果：中途退出","最佳用时：暂无记录","目标 {0}/8","剩余{0}×{1}个","提示：{0}次｜提示加时：+{1}秒","空格","包含{0}的格子","倒计时已取消","开始","未提交：中途退出","等待提交","已使用提示：+{0}秒","{0}次（+{1}秒）","未提交（中途退出）","提交中...","本局未填写名字，因此不会提交到排行榜。","成绩正在等待提交。可以重新提交同一次结果。","成绩已提交","成绩提交失败。本次结果仍保留在此页面。","成绩未被接受。本次结果仍保留在此页面。","加载中...","暂无记录。","排行榜加载失败。点击“重新加载排行榜”可重试。","{0}结果","结果：中途退出","已用时间：{0}","点错：{0}次","提示：{0}次","来挑战8×8表情搜集！","实际用时：{0}","点错：{0}次（+{1}秒）","提示：{0}次（+{1}秒）","最终用时：{0}","复制失败","语言"],"fr":["絵文字拾い","絵文字拾い · grille 8×8","Meilleur temps : chargement","Trouvez l’emoji demandé et ramassez les 8 exemplaires.","Ramassez les 8 types d’emojis le plus vite possible.","Effets sonores","Activés","Volume","Nom (facultatif, 10 caractères maximum)","Saisissez un nom","Si vous saisissez un nom, votre nom et votre résultat seront publics dans le classement. Vous pouvez aussi jouer sans nom.","Chaque mauvaise sélection ajoute 5 secondes au temps final.","Les indices sont illimités, mais chacun ajoute 45 secondes.","Si vous commencez avec un nom, le résultat d’une partie terminée est envoyé automatiquement. Les parties sans nom ou abandonnées ne sont pas envoyées.","Renvoyer les résultats en attente","Jouer","Règles du jeu","Partager sur X","Classement","Jouer à d’autres jeux","Départ imminent","La cible et la grille sont masquées pendant le compte à rebours.","0,00 s","Abandonner","Cible","Cible actuelle","Cible 1/8","Restants : 8 × 🙂","Grille d’emojis","Voir un indice (+45 s)","Indices : 0 | Pénalité : +0 s","Résultat","Terminé !","Nom","Sans nom","Temps réel","Mauvaises sélections","0 fois","Indices","0 fois (+0 s)","Envoi au classement","En attente","Temps final","Rejouer","Quitter","Réessayer l’envoi","Actualiser le classement","Dans la grille 8×8, trouvez et sélectionnez uniquement les emojis identiques à la cible.","Chaque cible apparaît 8 fois dans la grille.","Après avoir ramassé les 8 exemplaires, vous passez à la cible suivante.","Après 5 erreurs sur une même cible, les bords des bonnes cases clignotent en rouge.","Un indice éclaire les bords des bonnes cases pendant 2 secondes et ajoute 45 secondes au temps final.","Votre meilleur temps est enregistré dans ce navigateur. Il peut être perdu si vous effacez les données du navigateur.","Fermer","Copié dans le presse-papiers","Copier le texte à partager","Si X ne s’ouvre pas, vous pouvez copier le texte et l’URL pour les publier.","Texte et URL à partager","Copier","Copié. Vérifiez la publication dans X.","Sélectionnez le texte et copiez-le manuellement.","Désactivés","Trouvez et ramassez tous les emojis demandés dans une grille 8×8 le plus vite possible.","{0} s","Meilleur temps : {0}","Meilleur temps : abandon","Meilleur temps : aucun pour le moment","Cible {0}/8","Restants : {1} × {0}","Indices : {0} | Pénalité : +{1} s","Case vide","Case {0}","Compte à rebours annulé","PARTEZ !","Aucun envoi : partie abandonnée","En attente d’envoi","Indices : +{0} s","{0} fois (+{1} s)","Aucun envoi (abandon)","Envoi en cours...","Vous avez joué sans nom ; ce résultat ne sera pas envoyé au classement.","Ce résultat est en attente d’envoi. Vous pouvez renvoyer le même résultat.","Envoyé","Échec de l’envoi. Le résultat de cette partie est conservé.","Impossible d’envoyer le résultat. Le résultat de cette partie est conservé.","Chargement...","Aucun résultat pour le moment.","Impossible de charger le classement. Utilisez « Actualiser le classement » pour réessayer.","Résultat de {0}","Résultat : abandon","Temps écoulé : {0}","Mauvaises sélections : {0}","Indices : {0}","Essayez 絵文字拾い sur une grille 8×8 !","Temps réel : {0}","Mauvaises sélections : {0} (+{1} s)","Indices : {0} (+{1} s)","Temps final : {0}","Impossible de copier","Langue"],"de":["絵文字拾い","絵文字拾い · 8×8-Feld","Bestzeit: wird geladen","Finde das gesuchte Emoji und sammle alle 8 Exemplare.","Sammle alle 8 Emoji-Arten so schnell wie möglich.","Soundeffekte","Ein","Lautstärke","Name (freiwillig, höchstens 10 Zeichen)","Name eingeben","Wenn du einen Namen eingibst, werden dein Name und dein Ergebnis in der Rangliste veröffentlicht. Du kannst auch ohne Namen spielen.","Jeder falsche Tipp erhöht die Endzeit um 5 Sekunden.","Du kannst beliebig oft einen Hinweis nutzen. Jeder Hinweis kostet 45 Sekunden.","Wenn du mit einem Namen startest, wird das Ergebnis einer abgeschlossenen Runde automatisch gesendet. Runden ohne Namen und abgebrochene Runden werden nicht gesendet.","Ausstehende Ergebnisse erneut senden","Starten","Spielregeln","Auf X teilen","Rangliste","Andere Spiele spielen","Gleich geht’s los","Während des Countdowns bleiben das gesuchte Emoji und das Spielfeld verborgen.","0,00 s","Abbrechen","Gesuchtes Emoji","Aktuell gesucht","Aufgabe 1/8","Noch 8 × 🙂","Emoji-Spielfeld","Hinweis anzeigen (+45 s)","Hinweise: 0 | Zeitaufschlag: +0 s","Ergebnis","Geschafft!","Name","Ohne Namen","Gemessene Zeit","Falsche Tipps","0-mal","Hinweise","0-mal (+0 s)","Übermittlung an die Rangliste","Wartet","Endzeit","Noch einmal","Beenden","Senden erneut versuchen","Rangliste neu laden","Finde auf dem 8×8-Feld die gesuchten Emojis und tippe nur diese an.","Jedes gesuchte Emoji ist 8-mal vorhanden.","Wenn du alle 8 gesammelt hast, kommt das nächste Emoji dran.","Nach 5 Fehlern beim selben Emoji blinken die Ränder der richtigen Felder rot.","Ein Hinweis lässt die Ränder der richtigen Felder 2 Sekunden lang aufleuchten und erhöht die Endzeit um 45 Sekunden.","Deine Bestzeit wird in diesem Browser gespeichert. Beim Löschen der Browserdaten kann sie verloren gehen.","Schließen","In die Zwischenablage kopiert","Text zum Teilen kopieren","Wenn X nicht geöffnet werden kann, kannst du Text und URL kopieren und selbst posten.","Text und URL zum Teilen","Kopieren","Kopiert. Prüfe den Beitrag in X.","Markiere den Text und kopiere ihn manuell.","Aus","Finde und sammle auf einem 8×8-Feld alle gesuchten Emojis so schnell wie möglich.","{0} s","Bestzeit: {0}","Bestzeit: abgebrochen","Bestzeit: noch keine","Aufgabe {0}/8","Noch {1} × {0}","Hinweise: {0} | Zeitaufschlag: +{1} s","Leeres Feld","Feld mit {0}","Countdown abgebrochen","LOS!","Nicht gesendet: Runde abgebrochen","Senden steht aus","Hinweise: +{0} s","{0}-mal (+{1} s)","Nicht gesendet (abgebrochen)","Wird gesendet...","Du hast ohne Namen gespielt. Dieses Ergebnis wird nicht an die Rangliste gesendet.","Dieses Ergebnis wartet auf den Versand. Du kannst dasselbe Ergebnis erneut senden.","Gesendet","Senden fehlgeschlagen. Das Ergebnis dieser Runde bleibt erhalten.","Das Ergebnis konnte nicht gesendet werden. Das Ergebnis dieser Runde bleibt erhalten.","Wird geladen...","Noch keine Ergebnisse.","Die Rangliste konnte nicht geladen werden. Versuche es über „Rangliste neu laden“ erneut.","Ergebnis für {0}","Ergebnis: abgebrochen","Vergangene Zeit: {0}","Falsche Tipps: {0}","Hinweise: {0}","Probiere 絵文字拾い auf einem 8×8-Feld!","Gemessene Zeit: {0}","Falsche Tipps: {0} (+{1} s)","Hinweise: {0} (+{1} s)","Endzeit: {0}","Kopieren fehlgeschlagen","Sprache"],"ko":["이모지 찾기","8×8 이모지 찾기","최고 기록: 불러오는 중","목표와 같은 이모지 8개를 모두 찾으세요.","8종류의 이모지를 모두 찾는 시간을 겨루는 게임이에요.","효과음","켜짐","음량","이름 (선택, 최대 10자)","이름 입력","이름을 입력하면 이름과 기록이 순위표에 공개됩니다. 비워 두어도 플레이할 수 있어요.","잘못 누를 때마다 최종 시간에 5초가 더해져요.","힌트는 제한 없이 쓸 수 있지만, 사용할 때마다 45초가 더해져요.","시작할 때 이름을 입력했다면 완료 기록이 순위표에 자동 전송돼요. 이름 없는 플레이와 중도 포기는 전송하지 않아요.","대기 중인 기록 다시 보내기","게임 시작","게임 방법","X에 공유","순위표","다른 게임 하기","곧 시작해요","카운트다운 중에는 목표와 게임판이 보이지 않아요.","0.00초","그만하기","목표","현재 목표","목표 1/8","🙂 8개 남음","이모지 게임판","힌트 보기 (+45초)","힌트: 0회 | 힌트 추가 시간: +0초","게임 결과","완료!","이름","미입력","실제 시간","잘못 누른 횟수","0회","힌트","0회 (+0초)","순위표 전송","대기 중","최종 시간","다시 하기","홈으로","전송 다시 시도","순위표 새로고침","8×8 게임판에서 목표와 같은 이모지만 찾아 누르세요.","각 목표 이모지는 8개씩 있어요.","목표 이모지 8개를 모두 찾으면 다음 목표로 바뀌어요.","같은 목표에서 5번 잘못 누르면 정답 칸의 테두리가 빨갛게 깜빡여요.","힌트를 쓰면 정답 칸의 테두리가 2초 동안 빛나요. 한 번 쓸 때마다 45초가 더해져요.","최고 기록은 이 브라우저에 저장돼요. 브라우저 데이터를 지우면 기록이 사라질 수 있어요.","닫기","클립보드에 복사했어요","공유 문구 복사","X가 열리지 않으면 문구와 URL을 복사해 게시할 수 있어요.","공유할 문구와 URL","복사","복사했어요. X에서 게시물을 확인하세요.","문구를 선택해서 직접 복사하세요.","꺼짐","8×8 게임판에서 목표 이모지를 모두 찾는 타임어택 게임이에요.","{0}초","최고 기록: {0}","최고 결과: 중도 포기","최고 기록: 아직 없음","목표 {0}/8","{0} {1}개 남음","힌트: {0}회 | 힌트 추가 시간: +{1}초","빈 칸","{0} 이모지 칸","카운트다운을 취소했어요","시작","전송 안 함: 중도 포기","전송 대기 중","힌트 사용: +{0}초","{0}회 (+{1}초)","전송 안 함 (중도 포기)","전송 중...","이름 없이 플레이했으므로 이번 결과는 순위표에 전송하지 않아요.","기록이 전송 대기 중이에요. 같은 결과로 다시 시도할 수 있어요.","기록 전송 완료","전송에 실패했어요. 이번 결과는 이 화면에 남아 있어요.","기록이 승인되지 않았어요. 이번 결과는 이 화면에 남아 있어요.","불러오는 중...","아직 기록이 없어요.","순위표를 불러오지 못했어요. ‘순위표 새로고침’으로 다시 시도하세요.","{0} 결과","결과: 중도 포기","경과 시간: {0}","잘못 누름: {0}회","힌트: {0}회","8×8 이모지 찾기에 도전하세요!","실제 시간: {0}","잘못 누름: {0}회 (+{1}초)","힌트: {0}회 (+{1}초)","최종 시간: {0}","복사하지 못했어요","언어"],"ru":["絵文字拾い","絵文字拾い · поле 8×8","Лучшее время: загрузка","Найдите указанный эмодзи и соберите все 8 одинаковых.","Соберите эмодзи всех 8 видов как можно быстрее.","Звуковые эффекты","Вкл.","Громкость","Имя (необязательно, до 10 символов)","Введите имя","Если вы введёте имя, ваше имя и результат будут опубликованы в таблице рекордов. Можно играть и без имени.","Каждое ошибочное нажатие добавляет 5 секунд к итоговому времени.","Подсказками можно пользоваться сколько угодно, но каждая добавляет 45 секунд.","Если начать с именем, результат завершённой игры отправится автоматически. Игры без имени и прерванные игры не отправляются.","Повторить отправку ожидающих результатов","Начать","Правила игры","Поделиться в X","Таблица рекордов","Другие игры","Скоро начнём","Во время обратного отсчёта цель и поле скрыты.","0,00 с","Прервать игру","Цель","Текущая цель","Цель 1/8","Осталось: 8 × 🙂","Поле с эмодзи","Показать подсказку (+45 с)","Подсказок: 0 | Добавлено: +0 с","Результат игры","Готово!","Имя","Без имени","Фактическое время","Ошибочные нажатия","0 раз","Подсказки","0 раз (+0 с)","Отправка в таблицу рекордов","Ожидание","Итоговое время","Ещё раз","Выйти","Повторить отправку","Обновить таблицу","На поле 8×8 находите и нажимайте только эмодзи, совпадающие с целью.","Для каждой цели на поле есть 8 одинаковых эмодзи.","Когда вы соберёте все 8, появится следующая цель.","После 5 ошибок на одной цели края нужных клеток начнут мигать красным.","Подсказка подсвечивает края нужных клеток на 2 секунды и добавляет 45 секунд к итоговому времени.","Лучшее время хранится в этом браузере. При удалении данных браузера оно может быть потеряно.","Закрыть","Скопировано в буфер обмена","Скопировать текст для публикации","Если X не открывается, скопируйте текст и URL и опубликуйте их самостоятельно.","Текст и URL для публикации","Копировать","Скопировано. Проверьте публикацию в X.","Выделите текст и скопируйте его вручную.","Выкл.","Находите и собирайте все указанные эмодзи на поле 8×8 как можно быстрее.","{0} с","Лучшее время: {0}","Лучшее время: игра прервана","Лучшее время: пока нет","Цель {0}/8","Осталось: {1} × {0}","Подсказок: {0} | Добавлено: +{1} с","Пустая клетка","Клетка с {0}","Обратный отсчёт отменён","СТАРТ!","Не отправлено: игра прервана","Ожидает отправки","Подсказки: +{0} с","{0} раз (+{1} с)","Не отправлено (игра прервана)","Отправка...","Вы играли без имени. Этот результат не будет отправлен в таблицу рекордов.","Этот результат ожидает отправки. Можно повторно отправить тот же результат.","Отправлено","Ошибка отправки. Результат этой игры сохранён.","Не удалось отправить результат. Результат этой игры сохранён.","Загрузка...","Результатов пока нет.","Не удалось загрузить таблицу. Нажмите «Обновить таблицу», чтобы повторить попытку.","Результат: {0}","Результат: игра прервана","Прошло времени: {0}","Ошибочных нажатий: {0}","Подсказок: {0}","Попробуйте 絵文字拾い на поле 8×8!","Фактическое время: {0}","Ошибочных нажатий: {0} (+{1} с)","Подсказок: {0} (+{1} с)","Итоговое время: {0}","Не удалось скопировать","Язык"],"it":["絵文字拾い","絵文字拾い · griglia 8×8","Miglior tempo: caricamento","Trova l’emoji indicata e raccogli tutti gli 8 esemplari.","Raccogli tutti gli 8 tipi di emoji nel minor tempo possibile.","Effetti sonori","Attivi","Volume","Nome (facoltativo, massimo 10 caratteri)","Inserisci un nome","Se inserisci un nome, il nome e il risultato saranno pubblicati in classifica. Puoi giocare anche senza nome.","Ogni tocco sbagliato aggiunge 5 secondi al tempo finale.","Puoi usare tutti gli aiuti che vuoi, ma ciascuno aggiunge 45 secondi.","Se inizi con un nome, il risultato di una partita completata viene inviato automaticamente. Le partite senza nome o abbandonate non vengono inviate.","Reinvia i risultati in sospeso","Inizia","Come si gioca","Condividi su X","Classifica","Gioca ad altri giochi","Si parte tra poco","Durante il conto alla rovescia, l’emoji da cercare e la griglia rimangono nascoste.","0,00 s","Abbandona","Da cercare","Emoji da cercare ora","Obiettivo 1/8","Rimangono 8 × 🙂","Griglia delle emoji","Mostra aiuto (+45 s)","Aiuti: 0 | Penalità: +0 s","Risultato","Completato!","Nome","Senza nome","Tempo effettivo","Tocchi sbagliati","0 volte","Aiuti","0 volte (+0 s)","Invio alla classifica","In attesa","Tempo finale","Gioca ancora","Esci","Riprova l’invio","Ricarica classifica","Nella griglia 8×8, cerca e tocca solo le emoji uguali a quella indicata.","Per ogni obiettivo ci sono 8 emoji uguali.","Dopo averle raccolte tutte e 8, passi all’emoji successiva.","Dopo 5 errori con lo stesso obiettivo, i bordi delle caselle corrette lampeggiano in rosso.","Un aiuto illumina i bordi delle caselle corrette per 2 secondi e aggiunge 45 secondi al tempo finale.","Il tuo miglior tempo viene salvato in questo browser. Cancellando i dati del browser potresti perderlo.","Chiudi","Copiato negli appunti","Copia il testo da condividere","Se X non si apre, puoi copiare il testo e l’URL per pubblicarli.","Testo e URL da condividere","Copia","Copiato. Controlla il post su X.","Seleziona il testo e copialo manualmente.","Disattivati","Trova e raccogli tutte le emoji indicate nella griglia 8×8 il più velocemente possibile.","{0} s","Miglior tempo: {0}","Miglior tempo: abbandono","Miglior tempo: ancora nessuno","Obiettivo {0}/8","Rimangono {1} × {0}","Aiuti: {0} | Penalità: +{1} s","Casella vuota","Casella con {0}","Conto alla rovescia annullato","VIA!","Nessun invio: partita abbandonata","In attesa di invio","Aiuti: +{0} s","{0} volte (+{1} s)","Nessun invio (abbandono)","Invio in corso...","Hai giocato senza nome: questo risultato non sarà inviato alla classifica.","Questo risultato è in attesa di invio. Puoi inviare di nuovo lo stesso risultato.","Inviato","Invio non riuscito. Il risultato di questa partita è stato conservato.","Impossibile inviare il risultato. Il risultato di questa partita è stato conservato.","Caricamento...","Non ci sono ancora risultati.","Impossibile caricare la classifica. Premi «Ricarica classifica» per riprovare.","Risultato di {0}","Risultato: abbandono","Tempo trascorso: {0}","Tocchi sbagliati: {0}","Aiuti: {0}","Prova 絵文字拾い su una griglia 8×8!","Tempo effettivo: {0}","Tocchi sbagliati: {0} (+{1} s)","Aiuti: {0} (+{1} s)","Tempo finale: {0}","Impossibile copiare","Lingua"],"zh-Hant":["表情蒐集","8×8 表情蒐集","最佳時間：載入中","找出目標表情，把相同的8個全部收集起來。","比一比誰能更快收集完全部8種表情。","音效","開啟","音量","名字（選填，最多10個字元）","輸入名字","填寫名字後，名字和成績會公開顯示在排行榜上。留空也能遊玩。","每次點錯都會在最終時間中增加5秒。","提示次數不限，但每次會增加45秒。","開始時填寫了名字的通關成績會自動提交到排行榜。未填寫名字或中途退出的成績不會提交。","重新提交待送出的成績","開始遊戲","玩法說明","分享到X","排行榜","玩其他遊戲","即將開始","倒數期間不會顯示目標和棋盤。","0.00秒","退出本局","目標","目前目標","目標 1/8","剩餘🙂×8個","表情棋盤","查看提示（+45秒）","提示：0次｜提示加時：+0秒","遊戲結果","完成！","名字","未填寫","實際時間","點錯次數","0次","提示","0次（+0秒）","成績提交","等待中","最終時間","再玩一次","返回首頁","重新提交","重新載入排行榜","在8×8棋盤中找出並點擊與目標相同的表情。","每種目標表情都有8個。","收集完目標的8個表情後，會切換到下一個目標。","同一目標下點錯5次後，正確格子的邊緣會閃紅光。","點擊提示會讓正確格子的邊緣亮起2秒。每次增加45秒。","最佳成績儲存在此瀏覽器中。清除瀏覽器資料可能會刪除紀錄。","關閉","已複製到剪貼簿","複製分享文字","如果無法開啟X，可以複製文字和網址後發文。","分享文字和網址","複製","已複製。請在X上確認發文。","請選取文字並手動複製。","關閉","在8×8棋盤中找出並收集全部目標表情的計時挑戰。","{0}秒","最佳時間：{0}","最佳結果：中途退出","最佳時間：尚無紀錄","目標 {0}/8","剩餘{0}×{1}個","提示：{0}次｜提示加時：+{1}秒","空格","包含{0}的格子","倒數已取消","開始","未提交：中途退出","等待提交","已使用提示：+{0}秒","{0}次（+{1}秒）","未提交（中途退出）","提交中...","本局未填寫名字，因此不會提交到排行榜。","成績正在等待提交。可以重新提交同一次結果。","成績已提交","成績提交失敗。本次結果仍保留在此頁面。","成績未被接受。本次結果仍保留在此頁面。","載入中...","尚無紀錄。","排行榜載入失敗。點擊「重新載入排行榜」可重試。","{0}結果","結果：中途退出","已用時間：{0}","點錯：{0}次","提示：{0}次","來挑戰8×8表情蒐集！","實際時間：{0}","點錯：{0}次（+{1}秒）","提示：{0}次（+{1}秒）","最終時間：{0}","複製失敗","語言"],"id":["Berburu Emoji","Berburu Emoji 8×8","Waktu terbaik: memuat","Temukan semua 8 salinan emoji target.","Berlomba mengumpulkan kedelapan jenis emoji secepat mungkin.","Efek suara","Aktif","Volume","Nama (opsional, maksimal 10 karakter)","Masukkan nama","Jika mengisi nama, nama dan skor Anda akan dipublikasikan di papan peringkat. Anda juga bisa bermain tanpa nama.","Setiap ketukan yang salah menambah 5 detik pada waktu akhir.","Petunjuk tidak dibatasi, tetapi setiap penggunaan menambah 45 detik.","Hasil yang selesai dikirim otomatis jika nama diisi sebelum mulai. Hasil tanpa nama dan permainan yang dihentikan tidak dikirim.","Kirim ulang skor tertunda","Mulai bermain","Cara bermain","Bagikan di X","Papan peringkat","Mainkan game lain","Segera dimulai","Target dan papan disembunyikan selama hitung mundur.","0.00 dtk","Menyerah","Target","Target saat ini","Target 1/8","Sisa 🙂 × 8","Papan emoji","Lihat petunjuk (+45 dtk)","Petunjuk: 0 | Tambahan waktu: +0 dtk","Hasil permainan","Selesai!","Nama","Belum diisi","Waktu sebenarnya","Ketukan salah","0 kali","Petunjuk","0 kali (+0 dtk)","Pengiriman skor","Menunggu","Waktu akhir","Main lagi","Kembali ke beranda","Coba kirim lagi","Muat ulang peringkat","Cari dan ketuk hanya emoji target di papan 8×8.","Ada 8 salinan untuk setiap emoji target.","Kumpulkan semua 8 salinan untuk beralih ke target berikutnya.","Setelah 5 ketukan salah pada target yang sama, tepi sel yang cocok berkedip merah.","Petunjuk menyalakan tepi sel yang cocok selama 2 detik. Setiap petunjuk menambah 45 detik.","Waktu terbaik disimpan di browser ini. Menghapus data browser dapat menghapus catatan.","Tutup","Tersalin ke papan klip","Salin teks berbagi","Jika X tidak terbuka, salin teks dan URL untuk membuat postingan.","Teks dan URL berbagi","Salin","Tersalin. Periksa postingan Anda di X.","Pilih teks lalu salin secara manual.","Nonaktif","Temukan dan kumpulkan semua emoji target di papan 8×8 dalam tantangan waktu ini.","{0} dtk","Waktu terbaik: {0}","Hasil terbaik: menyerah","Waktu terbaik: belum ada","Target {0}/8","Sisa {0} × {1}","Petunjuk: {0} | Tambahan waktu: +{1} dtk","Sel kosong","Sel berisi {0}","Hitung mundur dibatalkan","MULAI","Tidak dikirim: menyerah","Menunggu pengiriman","Petunjuk digunakan: +{0} dtk","{0} kali (+{1} dtk)","Tidak dikirim (menyerah)","Mengirim...","Anda bermain tanpa nama, jadi hasil ini tidak dikirim ke papan peringkat.","Skor Anda menunggu pengiriman. Anda dapat mencoba mengirim hasil yang sama lagi.","Skor terkirim","Skor gagal dikirim. Hasil Anda tetap ada di layar ini.","Skor tidak dapat diterima. Hasil Anda tetap ada di layar ini.","Memuat...","Belum ada catatan.","Papan peringkat gagal dimuat. Gunakan “Muat ulang peringkat” untuk mencoba lagi.","Hasil {0}","Hasil: menyerah","Waktu berlalu: {0}","Ketukan salah: {0}","Petunjuk: {0}","Coba Berburu Emoji 8×8!","Waktu sebenarnya: {0}","Ketukan salah: {0} (+{1} dtk)","Petunjuk: {0} (+{1} dtk)","Waktu akhir: {0}","Gagal menyalin","Bahasa"],"tr":["絵文字拾い","絵文字拾い · 8×8 oyun alanı","En iyi süre: yükleniyor","İstenen emojiyi bul ve aynısından 8 tane topla.","8 emoji türünün tamamını en kısa sürede topla.","Ses efektleri","Açık","Ses düzeyi","Ad (isteğe bağlı, en fazla 10 karakter)","Adını yaz","Adını yazarsan adın ve sonucun sıralamada herkese açık olarak yayımlanır. Ad yazmadan da oynayabilirsin.","Her yanlış dokunuş, sonuç süresine 5 saniye ekler.","İpuçlarını istediğin kadar kullanabilirsin; her biri 45 saniye ekler.","Ada sahip olarak başladığın ve tamamladığın oyunların sonucu otomatik gönderilir. Adsız veya yarıda bırakılmış oyunlar gönderilmez.","Bekleyen sonuçları yeniden gönder","Başla","Nasıl oynanır","X’te paylaş","Sıralama","Diğer oyunları oyna","Birazdan başlıyor","Geri sayım sırasında hedef emoji ve oyun alanı gizlenir.","0,00 sn","Bırak","Hedef","Şimdiki hedef","Hedef 1/8","Kalan: 8 × 🙂","Emoji oyun alanı","İpucu göster (+45 sn)","İpucu: 0 | Eklenen süre: +0 sn","Oyun sonucu","Tamamlandı!","Ad","Ad girilmedi","Gerçek süre","Yanlış dokunuşlar","0 kez","İpuçları","0 kez (+0 sn)","Sıralamaya gönderim","Bekleniyor","Sonuç süresi","Tekrar oyna","Çık","Gönderimi yeniden dene","Sıralamayı yenile","8×8 oyun alanında yalnızca hedefle aynı olan emojileri bul ve onlara dokun.","Her hedef için aynı emojiden 8 tane vardır.","8 tanesini de topladığında sonraki hedefe geçersin.","Aynı hedefte 5 kez hata yaparsan doğru hücrelerin kenarları kırmızı yanıp söner.","İpucu, doğru hücrelerin kenarlarını 2 saniye aydınlatır ve sonuç süresine 45 saniye ekler.","En iyi süren bu tarayıcıda saklanır. Tarayıcı verilerini silersen bu kayıt kaybolabilir.","Kapat","Panoya kopyalandı","Paylaşım metnini kopyala","X açılamazsa metni ve URL’yi kopyalayıp kendin paylaşabilirsin.","Paylaşılacak metin ve URL","Kopyala","Kopyalandı. Gönderiyi X’te kontrol et.","Metni seçip elle kopyala.","Kapalı","8×8 oyun alanında istenen tüm emojileri olabildiğince hızlı bul ve topla.","{0} sn","En iyi süre: {0}","En iyi süre: oyun bırakıldı","En iyi süre: henüz yok","Hedef {0}/8","Kalan: {1} × {0}","İpucu: {0} | Eklenen süre: +{1} sn","Boş hücre","{0} hücresi","Geri sayım iptal edildi","BAŞLA!","Gönderilmedi: oyun bırakıldı","Gönderim bekleniyor","İpuçları: +{0} sn","{0} kez (+{1} sn)","Gönderilmedi (oyun bırakıldı)","Gönderiliyor...","Adsız oynadığın için bu sonuç sıralamaya gönderilmeyecek.","Bu sonuç gönderim bekliyor. Aynı sonucu yeniden gönderebilirsin.","Gönderildi","Gönderim başarısız. Bu oyunun sonucu korunuyor.","Sonuç gönderilemedi. Bu oyunun sonucu korunuyor.","Yükleniyor...","Henüz kayıt yok.","Sıralama yüklenemedi. “Sıralamayı yenile” ile tekrar deneyebilirsin.","{0} sonucu","Sonuç: oyun bırakıldı","Geçen süre: {0}","Yanlış dokunuş: {0}","İpucu: {0}","8×8 oyun alanında 絵文字拾い oyununu dene!","Gerçek süre: {0}","Yanlış dokunuş: {0} (+{1} sn)","İpucu: {0} (+{1} sn)","Sonuç süresi: {0}","Kopyalanamadı","Dil"],"vi":["Săn biểu tượng cảm xúc","Săn biểu tượng cảm xúc 8×8","Thời gian tốt nhất: đang tải","Tìm đủ 8 biểu tượng giống mẫu yêu cầu.","Đua thời gian để thu thập hết cả 8 loại biểu tượng.","Hiệu ứng âm thanh","Bật","Âm lượng","Tên (không bắt buộc, tối đa 10 ký tự)","Nhập tên","Nếu nhập tên, tên và điểm của bạn sẽ được công khai trên bảng xếp hạng. Bạn vẫn có thể chơi khi để trống.","Mỗi lần chạm sai sẽ cộng 5 giây vào thời gian cuối.","Có thể dùng gợi ý không giới hạn, nhưng mỗi lần sẽ cộng 45 giây.","Lượt chơi hoàn thành sẽ tự gửi kết quả nếu bạn nhập tên trước khi bắt đầu. Lượt không tên và lượt bỏ cuộc không được gửi.","Gửi lại thành tích đang chờ","Bắt đầu chơi","Cách chơi","Chia sẻ lên X","Bảng xếp hạng","Chơi trò khác","Sắp bắt đầu","Mẫu yêu cầu và bảng được ẩn trong lúc đếm ngược.","0.00 giây","Bỏ cuộc","Mẫu yêu cầu","Mẫu hiện tại","Mẫu 1/8","Còn 🙂 × 8","Bảng biểu tượng cảm xúc","Xem gợi ý (+45 giây)","Gợi ý: 0 lần | Thời gian cộng: +0 giây","Kết quả trò chơi","Hoàn thành!","Tên","Chưa nhập","Thời gian thực tế","Chạm sai","0 lần","Gợi ý","0 lần (+0 giây)","Gửi thành tích","Đang chờ","Thời gian cuối","Chơi lại","Về trang chủ","Thử gửi lại","Tải lại bảng xếp hạng","Trên bảng 8×8, chỉ tìm và chạm biểu tượng giống mẫu yêu cầu.","Mỗi loại biểu tượng yêu cầu có 8 ô.","Tìm đủ 8 biểu tượng để chuyển sang mẫu tiếp theo.","Chạm sai 5 lần với cùng một mẫu sẽ làm viền các ô đúng nhấp nháy đỏ.","Gợi ý làm sáng viền các ô đúng trong 2 giây. Mỗi lần gợi ý cộng 45 giây.","Thành tích tốt nhất được lưu trong trình duyệt này. Xóa dữ liệu trình duyệt có thể làm mất thành tích.","Đóng","Đã sao chép vào bộ nhớ tạm","Sao chép nội dung chia sẻ","Nếu không mở được X, hãy sao chép nội dung và URL để đăng bài.","Nội dung và URL chia sẻ","Sao chép","Đã sao chép. Hãy kiểm tra bài đăng trên X.","Chọn nội dung và sao chép thủ công.","Tắt","Tìm và thu thập hết các biểu tượng theo mẫu trên bảng 8×8 trong cuộc đua thời gian.","{0} giây","Thời gian tốt nhất: {0}","Kết quả tốt nhất: bỏ cuộc","Thời gian tốt nhất: chưa có","Mẫu {0}/8","Còn {0} × {1}","Gợi ý: {0} lần | Thời gian cộng: +{1} giây","Ô trống","Ô có {0}","Đã hủy đếm ngược","BẮT ĐẦU","Không gửi: bỏ cuộc","Đang chờ gửi","Đã dùng gợi ý: +{0} giây","{0} lần (+{1} giây)","Không gửi (bỏ cuộc)","Đang gửi...","Bạn chơi không có tên nên kết quả này sẽ không được gửi lên bảng xếp hạng.","Thành tích đang chờ gửi. Bạn có thể gửi lại cùng kết quả này.","Đã gửi thành tích","Không gửi được thành tích. Kết quả vẫn được giữ trên màn hình này.","Thành tích không được chấp nhận. Kết quả vẫn được giữ trên màn hình này.","Đang tải...","Chưa có thành tích.","Không tải được bảng xếp hạng. Dùng “Tải lại bảng xếp hạng” để thử lại.","Kết quả {0}","Kết quả: bỏ cuộc","Thời gian đã qua: {0}","Chạm sai: {0} lần","Gợi ý: {0} lần","Thử sức với Săn biểu tượng cảm xúc 8×8!","Thời gian thực tế: {0}","Chạm sai: {0} lần (+{1} giây)","Gợi ý: {0} lần (+{1} giây)","Thời gian cuối: {0}","Không thể sao chép","Ngôn ngữ"],"th":["ตามหาอีโมจิ","ตามหาอีโมจิ 8×8","เวลาที่ดีที่สุด: กำลังโหลด","หาอีโมจิที่ตรงกับเป้าหมายให้ครบทั้ง 8 ตัว","แข่งเวลาว่าใครจะเก็บอีโมจิทั้ง 8 ชนิดได้เร็วที่สุด","เสียงเอฟเฟกต์","เปิด","ระดับเสียง","ชื่อ (ไม่บังคับ ไม่เกิน 10 ตัวอักษร)","กรอกชื่อ","หากกรอกชื่อ ชื่อและคะแนนของคุณจะเผยแพร่บนตารางอันดับ เว้นว่างไว้ก็เล่นได้","แตะผิดแต่ละครั้งจะบวก 5 วินาทีในเวลาสุดท้าย","ใช้คำใบ้ได้ไม่จำกัด แต่แต่ละครั้งจะบวก 45 วินาที","ผลการเล่นจนจบจะส่งอัตโนมัติหากกรอกชื่อก่อนเริ่ม การเล่นที่ไม่กรอกชื่อหรือยอมแพ้จะไม่ส่งผล","ส่งสถิติที่รอส่งอีกครั้ง","เริ่มเกม","วิธีเล่น","แชร์บน X","ตารางอันดับ","เล่นเกมอื่น","กำลังจะเริ่ม","เป้าหมายและกระดานจะถูกซ่อนไว้ระหว่างนับถอยหลัง","0.00 วินาที","ยอมแพ้","เป้าหมาย","เป้าหมายปัจจุบัน","เป้าหมาย 1/8","เหลือ 🙂 × 8 ตัว","กระดานอีโมจิ","ดูคำใบ้ (+45 วินาที)","คำใบ้: 0 ครั้ง | เวลาที่เพิ่ม: +0 วินาที","ผลการเล่น","สำเร็จ!","ชื่อ","ไม่ได้กรอก","เวลาจริง","แตะผิด","0 ครั้ง","คำใบ้","0 ครั้ง (+0 วินาที)","การส่งสถิติ","รออยู่","เวลาสุดท้าย","เล่นอีกครั้ง","กลับหน้าหลัก","ลองส่งอีกครั้ง","โหลดอันดับใหม่","หาและแตะเฉพาะอีโมจิที่ตรงกับเป้าหมายบนกระดาน 8×8","อีโมจิเป้าหมายแต่ละชนิดมี 8 ตัว","เก็บให้ครบ 8 ตัวแล้วจะเปลี่ยนเป็นเป้าหมายถัดไป","หากแตะผิด 5 ครั้งในเป้าหมายเดียวกัน ขอบช่องที่ถูกต้องจะกะพริบสีแดง","คำใบ้จะทำให้ขอบช่องที่ถูกต้องสว่าง 2 วินาที แต่ละครั้งบวก 45 วินาที","สถิติที่ดีที่สุดจะบันทึกในเบราว์เซอร์นี้ การล้างข้อมูลเบราว์เซอร์อาจทำให้สถิติหายไป","ปิด","คัดลอกไปยังคลิปบอร์ดแล้ว","คัดลอกข้อความแชร์","หากเปิด X ไม่ได้ ให้คัดลอกข้อความและ URL เพื่อนำไปโพสต์","ข้อความและ URL สำหรับแชร์","คัดลอก","คัดลอกแล้ว ตรวจสอบโพสต์ของคุณบน X","เลือกข้อความแล้วคัดลอกด้วยตนเอง","ปิด","แข่งเวลาหาและเก็บอีโมจิเป้าหมายให้ครบทั้งหมดบนกระดาน 8×8","{0} วินาที","เวลาที่ดีที่สุด: {0}","ผลดีที่สุด: ยอมแพ้","เวลาที่ดีที่สุด: ยังไม่มีสถิติ","เป้าหมาย {0}/8","เหลือ {0} × {1} ตัว","คำใบ้: {0} ครั้ง | เวลาที่เพิ่ม: +{1} วินาที","ช่องว่าง","ช่องที่มี {0}","ยกเลิกการนับถอยหลังแล้ว","เริ่ม","ไม่ได้ส่ง: ยอมแพ้","รอส่ง","ใช้คำใบ้: +{0} วินาที","{0} ครั้ง (+{1} วินาที)","ไม่ได้ส่ง (ยอมแพ้)","กำลังส่ง...","คุณเล่นโดยไม่กรอกชื่อ จึงไม่ส่งผลนี้ไปยังตารางอันดับ","สถิติของคุณรอส่งอยู่ คุณสามารถลองส่งผลเดิมอีกครั้งได้","ส่งสถิติแล้ว","ส่งสถิติไม่สำเร็จ ผลลัพธ์ยังอยู่บนหน้าจอนี้","ระบบไม่ยอมรับสถิติ ผลลัพธ์ยังอยู่บนหน้าจอนี้","กำลังโหลด...","ยังไม่มีสถิติ","โหลดตารางอันดับไม่สำเร็จ ใช้ “โหลดอันดับใหม่” เพื่อลองอีกครั้ง","ผล {0}","ผล: ยอมแพ้","เวลาที่ผ่านไป: {0}","แตะผิด: {0} ครั้ง","คำใบ้: {0} ครั้ง","ลองตามหาอีโมจิ 8×8!","เวลาจริง: {0}","แตะผิด: {0} ครั้ง (+{1} วินาที)","คำใบ้: {0} ครั้ง (+{1} วินาที)","เวลาสุดท้าย: {0}","คัดลอกไม่สำเร็จ","ภาษา"]}}</script>
+<script>
+/* Presentation only: internal game reasons/judgements and participant names stay unchanged. */
+(()=>{
+ const {source,catalogs}=JSON.parse(document.getElementById('localeData').textContent);
+ const indices=new Map(source.map((s,i)=>[s,i]));
+ const names={'ja':'日本語','en':'English','es':'Español','pt-BR':'Português (Brasil)','zh-Hans':'简体中文','fr':'Français','de':'Deutsch','ko':'한국어','ru':'Русский','it':'Italiano','zh-Hant':'繁體中文','id':'Bahasa Indonesia','tr':'Türkçe','vi':'Tiếng Việt','th':'ไทย'};
+ function match(value){const s=String(value||'').replace(/_/g,'-').toLowerCase();const exact=Object.keys(catalogs).find(k=>k.toLowerCase()===s);if(exact)return exact;if(/^zh-hans(?:-|$)/.test(s))return'zh-Hans';if(/^zh-hant(?:-|$)/.test(s))return'zh-Hant';if(s.startsWith('zh'))return /(?:^|-)(?:tw|hk|mo)(?:-|$)/.test(s)?'zh-Hant':'zh-Hans';if(s==='pt'||s.startsWith('pt-'))return'pt-BR';const base=s.split('-')[0];return Object.hasOwn(catalogs,base)?base:null;}
+ let stored;try{stored=localStorage.getItem('emojihiroi:language')}catch(_){}
+ let lang=match(stored)||(navigator.languages||[navigator.language]).map(match).find(Boolean)||'en';
+ const staticNodes=[],attrs=[],bindings=new Map();
+ const dynamicIds=new Set(['best-score','countdown-number','target-emoji','target-stage','remaining-display','penalty-note','timer','result-status','result-player','actual-score','wrong-count','hint-penalty','submit-status','final-score','toast','ranking-read-status','result-ranking','commonShareStatus']);
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+ while(walker.nextNode()){const node=walker.currentNode,p=node.parentElement;if(!p||p.closest('script,style,textarea,select')||dynamicIds.has(p.id))continue;const raw=node.nodeValue,key=raw.trim();if(indices.has(key))staticNodes.push({node,key,before:raw.slice(0,raw.indexOf(key)),after:raw.slice(raw.indexOf(key)+key.length)});}
+ for(const el of document.querySelectorAll('[placeholder],[aria-label]'))for(const a of ['placeholder','aria-label']){const key=el.getAttribute(a);if(indices.has(key))attrs.push({el,a,key});}
+ window.t=(key,...args)=>{const i=indices.get(key);return (i===undefined?String(key):catalogs[lang][i]).replace(/\{(\d+)\}/g,(_,n)=>String(args[Number(n)]??''));};
+ window.setText=(id,key,...args)=>{const node=document.getElementById(id);bindings.set(id,{key,args});node.textContent=t(key,...args);};
+ const select=document.getElementById('languageSelect');for(const [id,label]of Object.entries(names)){const o=document.createElement('option');o.value=id;o.textContent=label;select.append(o);}select.value=lang;
+ function render(){document.documentElement.lang=lang;document.title=t('絵文字拾い');for(const {node,key,before,after}of staticNodes)node.nodeValue=before+t(key)+after;for(const {el,a,key}of attrs)el.setAttribute(a,t(key));for(const[id,{key,args}]of bindings)document.getElementById(id).textContent=t(key,...args);}
+ select.addEventListener('change',()=>{if(!Object.hasOwn(catalogs,select.value))return;lang=select.value;try{localStorage.setItem('emojihiroi:language',lang)}catch(_){}render();window.dispatchEvent(new Event('game-language-change'));});
+ window.gameLocale={match,language:()=>lang};render();
+})();
+</script>
+
 <script>
 (() => {
-  'use strict';
-  const dialog = document.getElementById('commonShareFallback');
-  const field = document.getElementById('commonShareText');
-  const status = document.getElementById('commonShareStatus');
-  window.openGameShareX = (text) => {
-    const body = String(text);
-    const intent = new URL('https://x.com/intent/post');
-    intent.searchParams.set('text', body);
-    let popup;
-    try {
-      popup = window.open('', '_blank');
-      if (popup) {
-        popup.opener = null;
-        popup.location.replace(intent.href);
-        return;
-      }
-    } catch (_) {
-      try { if (popup) popup.close(); } catch (_) {}
-    }
-    field.value = body;
-    status.textContent = '';
-    if (!dialog.open) dialog.showModal();
-    field.focus();
-    field.select();
-  };
-  document.getElementById('commonShareCopy').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(field.value);
-      status.textContent = 'コピーしました。投稿はXで確認してください。';
-    } catch (_) {
-      field.focus();
-      field.select();
-      status.textContent = '本文を選択して手動でコピーしてください。';
-    }
-  });
-  document.getElementById('commonShareClose').addEventListener('click', () => dialog.close());
+    'use strict';
+    const dialog = document.getElementById('commonShareFallback');
+    const field = document.getElementById('commonShareText');
+    const status = document.getElementById('commonShareStatus');
+    window.openGameShareX = (text) => {
+        const body = String(text);
+        const intent = new URL('https://x.com/intent/post');
+        intent.searchParams.set('text', body);
+        let popup;
+        try {
+            popup = window.open('', '_blank');
+            if (popup) {
+                popup.opener = null;
+                popup.location.replace(intent.href);
+                return;
+            }
+        }
+        catch (_) {
+            try {
+                if (popup)
+                    popup.close();
+            }
+            catch (_) { }
+        }
+        field.value = body;
+        status.textContent = '';
+        if (!dialog.open)
+            dialog.showModal();
+        field.focus();
+        field.select();
+    };
+    document.getElementById('commonShareCopy').addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(field.value);
+            status.textContent = t("\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F\u3002\u6295\u7A3F\u306FX\u3067\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+        }
+        catch (_) {
+            field.focus();
+            field.select();
+            status.textContent = t("\u672C\u6587\u3092\u9078\u629E\u3057\u3066\u624B\u52D5\u3067\u30B3\u30D4\u30FC\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+        }
+    });
+    document.getElementById('commonShareClose').addEventListener('click', () => dialog.close());
 })();
 </script>
 
 <script>
 /* Sound events follow visible outcomes; failures never block gameplay. */
-(()=>{
- const read=(key,fallback)=>{try{const v=localStorage.getItem(key);return v===null?fallback:v;}catch(_){return fallback;}};
- let enabled=read('emojihiroi:sound','on')!=='off';
- const saved=read('emojihiroi:volume',null);let volume=saved===null||String(saved).trim()===''||!Number.isFinite(Number(saved))||Number(saved)<0||Number(saved)>1?.5:Number(saved);
- let context=null,last=-Infinity;const voices=new Set();
- const tones={start:[440,660],perfect:[660,880],ok:[440,550],early:[220,160],hit:[150,90],milestone:[660,880,1100],end:[440,330,220],hint:[440,880]};
- function persist(){try{localStorage.setItem('emojihiroi:sound',enabled?'on':'off');localStorage.setItem('emojihiroi:volume',String(volume));}catch(_){}}
- function stop(){for(const voice of [...voices]){try{voice.o.stop()}catch(_){}try{voice.o.disconnect();voice.g.disconnect()}catch(_){}voices.delete(voice);}}
- function unlock(){if(!enabled||volume===0||document.hidden)return;try{if(!context){const A=window.AudioContext||window.webkitAudioContext;if(!A)return;context=new A();}if(context.state!=='running')Promise.resolve(context.resume()).catch(()=>{});}catch(_){}}
- function play(kind){try{if(!enabled||volume===0||document.hidden)return;unlock();if(!context||context.state!=='running'||!tones[kind])return;const now=context.currentTime;if(kind!=='end'&&kind!=='milestone'&&now-last<.08)return;if(kind==='end'||kind==='milestone')stop();last=now;const pitch=tones[kind],step=.085;for(let i=0;i<pitch.length;i++){if(voices.size>=6)break;const o=context.createOscillator(),g=context.createGain(),at=now+i*step,v={o,g};voices.add(v);o.type=kind==='hit'?'triangle':'sine';o.frequency.setValueAtTime(pitch[i],at);g.gain.setValueAtTime(0,at);g.gain.linearRampToValueAtTime(volume*.1,at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+.12);o.connect(g);g.connect(context.destination);o.onended=()=>{voices.delete(v);try{o.disconnect();g.disconnect();}catch(_){}};o.start(at);o.stop(at+.13);}}catch(_){stop();}}
- function render(){const button=document.getElementById('soundToggle');button.textContent=enabled?'オン':'オフ';button.setAttribute('aria-pressed',String(enabled));document.getElementById('soundVolume').value=String(volume);}
- function setEnabled(value){enabled=Boolean(value);if(!enabled)stop();persist();render();if(enabled)unlock();}
- function setVolume(value){const n=Number(value);if(!Number.isFinite(n)||n<0||n>1)return;volume=n;if(volume===0)stop();persist();render();if(volume>0)unlock();}
- document.getElementById('soundToggle').addEventListener('click',()=>setEnabled(!enabled));
- document.getElementById('soundVolume').addEventListener('input',e=>setVolume(e.target.value));
- document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();try{if(context)Promise.resolve(context.suspend()).catch(()=>{});}catch(_){}}});
- window.addEventListener('game-language-change',render);
- window.GameSound={play,unlock,setEnabled,setVolume,stop,getState:()=>({enabled,volume,voices:voices.size})};render();
+(() => {
+    const read = (key, fallback) => { try {
+        const v = localStorage.getItem(key);
+        return v === null ? fallback : v;
+    }
+    catch (_) {
+        return fallback;
+    } };
+    let enabled = read('emojihiroi:sound', 'on') !== 'off';
+    const saved = read('emojihiroi:volume', null);
+    let volume = saved === null || String(saved).trim() === '' || !Number.isFinite(Number(saved)) || Number(saved) < 0 || Number(saved) > 1 ? .5 : Number(saved);
+    let context = null, last = -Infinity;
+    const voices = new Set();
+    const tones = { start: [440, 660], perfect: [660, 880], ok: [440, 550], early: [220, 160], hit: [150, 90], milestone: [660, 880, 1100], end: [440, 330, 220], hint: [440, 880] };
+    function persist() { try {
+        localStorage.setItem('emojihiroi:sound', enabled ? 'on' : 'off');
+        localStorage.setItem('emojihiroi:volume', String(volume));
+    }
+    catch (_) { } }
+    function stop() { for (const voice of [...voices]) {
+        try {
+            voice.o.stop();
+        }
+        catch (_) { }
+        try {
+            voice.o.disconnect();
+            voice.g.disconnect();
+        }
+        catch (_) { }
+        voices.delete(voice);
+    } }
+    function unlock() { if (!enabled || volume === 0 || document.hidden)
+        return; try {
+        if (!context) {
+            const A = window.AudioContext || window.webkitAudioContext;
+            if (!A)
+                return;
+            context = new A();
+        }
+        if (context.state !== 'running')
+            Promise.resolve(context.resume()).catch(() => { });
+    }
+    catch (_) { } }
+    function play(kind) { try {
+        if (!enabled || volume === 0 || document.hidden)
+            return;
+        unlock();
+        if (!context || context.state !== 'running' || !tones[kind])
+            return;
+        const now = context.currentTime;
+        if (kind !== 'end' && kind !== 'milestone' && now - last < .08)
+            return;
+        if (kind === 'end' || kind === 'milestone')
+            stop();
+        last = now;
+        const pitch = tones[kind], step = .085;
+        for (let i = 0; i < pitch.length; i++) {
+            if (voices.size >= 6)
+                break;
+            const o = context.createOscillator(), g = context.createGain(), at = now + i * step, v = { o, g };
+            voices.add(v);
+            o.type = kind === 'hit' ? 'triangle' : 'sine';
+            o.frequency.setValueAtTime(pitch[i], at);
+            g.gain.setValueAtTime(0, at);
+            g.gain.linearRampToValueAtTime(volume * .1, at + .008);
+            g.gain.exponentialRampToValueAtTime(.0001, at + .12);
+            o.connect(g);
+            g.connect(context.destination);
+            o.onended = () => { voices.delete(v); try {
+                o.disconnect();
+                g.disconnect();
+            }
+            catch (_) { } };
+            o.start(at);
+            o.stop(at + .13);
+        }
+    }
+    catch (_) {
+        stop();
+    } }
+    function render() { const button = document.getElementById('soundToggle'); button.textContent = enabled ? t("\u30AA\u30F3") : t("\u30AA\u30D5"); button.setAttribute('aria-pressed', String(enabled)); document.getElementById('soundVolume').value = String(volume); }
+    function setEnabled(value) { enabled = Boolean(value); if (!enabled)
+        stop(); persist(); render(); if (enabled)
+        unlock(); }
+    function setVolume(value) { const n = Number(value); if (!Number.isFinite(n) || n < 0 || n > 1)
+        return; volume = n; if (volume === 0)
+        stop(); persist(); render(); if (volume > 0)
+        unlock(); }
+    document.getElementById('soundToggle').addEventListener('click', () => setEnabled(!enabled));
+    document.getElementById('soundVolume').addEventListener('input', e => setVolume(e.target.value));
+    document.addEventListener('visibilitychange', () => { if (document.hidden) {
+        stop();
+        try {
+            if (context)
+                Promise.resolve(context.suspend()).catch(() => { });
+        }
+        catch (_) { }
+    } });
+    window.addEventListener('game-language-change', render);
+    window.GameSound = { play, unlock, setEnabled, setVolume, stop, getState: () => ({ enabled, volume, voices: voices.size }) };
+    render();
 })();
 </script>
 <script id="score-queue">
@@ -1012,10 +1127,8 @@ const GAME_DESCRIPTION = "8×8の中から、お題の絵文字を探して全�
 const GAME_SLUG = "emojihiroi";
 const CLIENT_VERSION = "emojihiroi-common-20261031";
 const LAB_URL = "https://chameleonjp-lab.github.io/chameleonjp_lab/";
-
 const SUPABASE_URL = "https://mlpnjgezrnhdxsxolyzj.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_drzcy0v97knU6FgjqSgBHw_0A9XPdFM";
-
 const EMOJIS = ["🙂", "🙁", "😐", "🫤", "😮", "😧", "😦", "😯"];
 const EACH_EMOJI_COUNT = 8;
 const WRONG_PENALTY_SECONDS = 5;
@@ -1024,14 +1137,12 @@ const SCORE_SCALE = 100;
 const STORAGE_KEY = "emojihiroi_best_v1";
 const NAME_KEY = "emojihiroi_player_name_v1";
 const ROUND_COLORS = ["#6d28d9", "#7c3aed", "#8b5cf6", "#9333ea", "#a855f7", "#c084fc", "#5b21b6", "#4c1d95"];
-
 const screens = {
-  home: document.getElementById("home-screen"),
-  countdown: document.getElementById("countdown-screen"),
-  game: document.getElementById("game-screen"),
-  result: document.getElementById("result-screen"),
+    home: document.getElementById("home-screen"),
+    countdown: document.getElementById("countdown-screen"),
+    game: document.getElementById("game-screen"),
+    result: document.getElementById("result-screen"),
 };
-
 const bestScoreEl = document.getElementById("best-score");
 const playerNameInput = document.getElementById("player-name");
 const startButton = document.getElementById("start-button");
@@ -1039,9 +1150,7 @@ const ruleButton = document.getElementById("rule-button");
 const shareGameButton = document.getElementById("share-game-button");
 const ruleModal = document.getElementById("rule-modal");
 const closeRuleButton = document.getElementById("close-rule-button");
-
 const countdownNumberEl = document.getElementById("countdown-number");
-
 const timerEl = document.getElementById("timer");
 const retireButton = document.getElementById("retire-button");
 const targetAreaEl = document.getElementById("target-area");
@@ -1051,7 +1160,6 @@ const remainingDisplayEl = document.getElementById("remaining-display");
 const boardEl = document.getElementById("board");
 const hintButton = document.getElementById("hint-button");
 const penaltyNoteEl = document.getElementById("penalty-note");
-
 const resultStatusEl = document.getElementById("result-status");
 const resultPlayerEl = document.getElementById("result-player");
 const actualScoreEl = document.getElementById("actual-score");
@@ -1063,7 +1171,6 @@ const shareResultButton = document.getElementById("share-result-button");
 const retryButton = document.getElementById("retry-button");
 const homeButton = document.getElementById("home-button");
 const toastEl = document.getElementById("toast");
-
 let board = [];
 let targetOrder = [];
 let targetIndex = 0;
@@ -1081,716 +1188,656 @@ let isCountingDown = false;
 let lastResult = null;
 let currentPlayerName = "";
 let submitSequence = 0, rankingRequest = 0, activePlay = null;
-const RESULT_KEY="emojihiroi:last-result:v1";let scoreQueue;
-
+let rankingDisplayState='idle',rankingRows=[];
+const RESULT_KEY = "emojihiroi:last-result:v1";
+let scoreQueue;
 function isNativeInteractionAllowed(target) {
-  if (!target || typeof target.closest !== "function") return false;
-  return Boolean(target.closest("input, textarea, [contenteditable='true'], a"));
+    if (!target || typeof target.closest !== "function")
+        return false;
+    return Boolean(target.closest("input, textarea, [contenteditable='true'], a"));
 }
-
 function installMobileGuards() {
-  document.addEventListener("dblclick", (event) => {
-    if (!isNativeInteractionAllowed(event.target)) {
-      event.preventDefault();
-    }
-  }, { passive: false });
-
-  document.addEventListener("contextmenu", (event) => {
-    if (!isNativeInteractionAllowed(event.target)) {
-      event.preventDefault();
-    }
-  });
-
-  ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
-    document.addEventListener(eventName, (event) => {
-      event.preventDefault();
+    document.addEventListener("dblclick", (event) => {
+        if (!isNativeInteractionAllowed(event.target)) {
+            event.preventDefault();
+        }
     }, { passive: false });
-  });
-
-  document.addEventListener("touchmove", (event) => {
-    if (event.touches && event.touches.length > 1) {
-      event.preventDefault();
-    }
-  }, { passive: false });
-
-  boardEl.addEventListener("touchmove", (event) => {
-    event.preventDefault();
-  }, { passive: false });
+    document.addEventListener("contextmenu", (event) => {
+        if (!isNativeInteractionAllowed(event.target)) {
+            event.preventDefault();
+        }
+    });
+    ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+        document.addEventListener(eventName, (event) => {
+            event.preventDefault();
+        }, { passive: false });
+    });
+    document.addEventListener("touchmove", (event) => {
+        if (event.touches && event.touches.length > 1) {
+            event.preventDefault();
+        }
+    }, { passive: false });
+    boardEl.addEventListener("touchmove", (event) => {
+        event.preventDefault();
+    }, { passive: false });
 }
-
 function bindTap(element, handler) {
-  if (!element) return;
-
-  let lastRun = 0;
-
-  const run = (event) => {
-    const now = Date.now();
-
-    if (event && event.type === "click" && now - lastRun < 450) {
-      return;
-    }
-
-    lastRun = now;
-
-    if (event && typeof event.preventDefault === "function") {
-      event.preventDefault();
-    }
-
-    handler(event);
-  };
-
-  if (window.PointerEvent) {
-    element.addEventListener("pointerup", run, { passive: false });
-  } else {
-    element.addEventListener("touchend", run, { passive: false });
-  }
-
-  element.addEventListener("click", run);
-}
-
-function shuffle(source) {
-  const array = [...source];
-
-  for (let i = array.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
-}
-
-function formatSeconds(value) {
-  return `${value.toFixed(2)}秒`;
-}
-
-function getGameUrl() {
-  return "https://chameleonjp.codeberg.page/emojihiroi/";
-}
-
-function showScreen(name) {
-  Object.values(screens).forEach((screen) => {
-    screen.classList.remove("is-active");
-  });
-
-  screens[name].classList.add("is-active");
-}
-
-function showToast(message = "クリップボードにコピーしました") {
-  toastEl.textContent = message;
-  toastEl.classList.add("is-show");
-
-  window.setTimeout(() => {
-    toastEl.classList.remove("is-show");
-  }, 1000);
-}
-
-function readRecord() {
-  const fallback = {
-    bestSeconds: null,
-    hasRetire: false,
-  };
-
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return fallback;
-
-    const parsed = JSON.parse(raw);
-
-    return {
-      bestSeconds: typeof parsed.bestSeconds === "number" ? parsed.bestSeconds : null,
-      hasRetire: Boolean(parsed.hasRetire),
+    if (!element)
+        return;
+    let lastRun = 0;
+    const run = (event) => {
+        const now = Date.now();
+        if (event && event.type === "click" && now - lastRun < 450) {
+            return;
+        }
+        lastRun = now;
+        if (event && typeof event.preventDefault === "function") {
+            event.preventDefault();
+        }
+        handler(event);
     };
-  } catch (error) {
-    return fallback;
-  }
+    if (window.PointerEvent) {
+        element.addEventListener("pointerup", run, { passive: false });
+    }
+    else {
+        element.addEventListener("touchend", run, { passive: false });
+    }
+    element.addEventListener("click", run);
 }
-
+function shuffle(source) {
+    const array = [...source];
+    for (let i = array.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+function formatSeconds(value) {
+    return t("{0}\u79D2", value.toFixed(2));
+}
+function getGameUrl() {
+    return "https://chameleonjp.codeberg.page/emojihiroi/";
+}
+function showScreen(name) {
+    Object.values(screens).forEach((screen) => {
+        screen.classList.remove("is-active");
+    });
+    screens[name].classList.add("is-active");
+}
+function showToast(message = t("\u30AF\u30EA\u30C3\u30D7\u30DC\u30FC\u30C9\u306B\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F")) {
+    toastEl.textContent = message;
+    toastEl.classList.add("is-show");
+    window.setTimeout(() => {
+        toastEl.classList.remove("is-show");
+    }, 1000);
+}
+function readRecord() {
+    const fallback = {
+        bestSeconds: null,
+        hasRetire: false,
+    };
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw)
+            return fallback;
+        const parsed = JSON.parse(raw);
+        return {
+            bestSeconds: typeof parsed.bestSeconds === "number" ? parsed.bestSeconds : null,
+            hasRetire: Boolean(parsed.hasRetire),
+        };
+    }
+    catch (error) {
+        return fallback;
+    }
+}
 function saveRecord(record) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
-  } catch (error) {
-    // 保存できない環境でもゲームは動かす。
-  }
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+    }
+    catch (error) {
+        // 保存できない環境でもゲームは動かす。
+    }
 }
-
 function savePlayerName(name) {
-  try {
-    localStorage.setItem(NAME_KEY, name);
-  } catch (error) {
-    // 保存できない環境でもゲームは動かす。
-  }
+    try {
+        localStorage.setItem(NAME_KEY, name);
+    }
+    catch (error) {
+        // 保存できない環境でもゲームは動かす。
+    }
 }
-
 function loadPlayerName() {
-  try {
-    return localStorage.getItem(NAME_KEY) || "";
-  } catch (error) {
-    return "";
-  }
+    try {
+        return localStorage.getItem(NAME_KEY) || "";
+    }
+    catch (error) {
+        return "";
+    }
 }
-
 function saveClearScore(finalSeconds) {
-  const record = readRecord();
-
-  if (record.bestSeconds === null || finalSeconds < record.bestSeconds) {
-    record.bestSeconds = finalSeconds;
-  }
-
-  saveRecord(record);
-}
-
-function saveRetireResult() {
-  const record = readRecord();
-
-  if (record.bestSeconds === null) {
-    record.hasRetire = true;
+    const record = readRecord();
+    if (record.bestSeconds === null || finalSeconds < record.bestSeconds) {
+        record.bestSeconds = finalSeconds;
+    }
     saveRecord(record);
-  }
 }
-
+function saveRetireResult() {
+    const record = readRecord();
+    if (record.bestSeconds === null) {
+        record.hasRetire = true;
+        saveRecord(record);
+    }
+}
 function updateBestScoreView() {
-  const record = readRecord();
-
-  if (record.bestSeconds !== null) {
-    bestScoreEl.textContent = `ベストスコア：${formatSeconds(record.bestSeconds)}`;
-    return;
-  }
-
-  if (record.hasRetire) {
-    bestScoreEl.textContent = "ベストスコア：リタイア";
-    return;
-  }
-
-  bestScoreEl.textContent = "ベストスコア：まだありません";
+    const record = readRecord();
+    if (record.bestSeconds !== null) {
+        bestScoreEl.textContent = t("\u30D9\u30B9\u30C8\u30B9\u30B3\u30A2\uFF1A{0}", formatSeconds(record.bestSeconds));
+        return;
+    }
+    if (record.hasRetire) {
+        bestScoreEl.textContent = t("\u30D9\u30B9\u30C8\u30B9\u30B3\u30A2\uFF1A\u30EA\u30BF\u30A4\u30A2");
+        return;
+    }
+    bestScoreEl.textContent = t("\u30D9\u30B9\u30C8\u30B9\u30B3\u30A2\uFF1A\u307E\u3060\u3042\u308A\u307E\u305B\u3093");
 }
-
 function getPlayerName() {
-  return Array.from(playerNameInput.value.trim()).slice(0,10).join("");
+    return Array.from(playerNameInput.value.trim()).slice(0, 10).join("");
 }
-
 function validateAndSaveName() {
-  const name = getPlayerName();
-
-  currentPlayerName = name;
-  savePlayerName(name);
-  return name;
+    const name = getPlayerName();
+    currentPlayerName = name;
+    savePlayerName(name);
+    return name;
 }
-
 function buildBoard() {
-  const cells = [];
-
-  EMOJIS.forEach((emoji) => {
-    for (let i = 0; i < EACH_EMOJI_COUNT; i += 1) {
-      cells.push({
-        emoji,
-        cleared: false,
-      });
-    }
-  });
-
-  return shuffle(cells);
+    const cells = [];
+    EMOJIS.forEach((emoji) => {
+        for (let i = 0; i < EACH_EMOJI_COUNT; i += 1) {
+            cells.push({
+                emoji,
+                cleared: false,
+            });
+        }
+    });
+    return shuffle(cells);
 }
-
 function getCurrentTarget() {
-  return targetOrder[targetIndex];
+    return targetOrder[targetIndex];
 }
-
 function getRoundColor() {
-  return ROUND_COLORS[targetIndex % ROUND_COLORS.length];
+    return ROUND_COLORS[targetIndex % ROUND_COLORS.length];
 }
-
 function getRemainingCount(target = getCurrentTarget()) {
-  return board.filter((cell) => !cell.cleared && cell.emoji === target).length;
+    return board.filter((cell) => !cell.cleared && cell.emoji === target).length;
 }
-
 function applyRoundColor() {
-  const color = getRoundColor();
-  targetAreaEl.style.setProperty("--round-accent", color);
-  boardEl.style.setProperty("--round-accent", color);
-  remainingDisplayEl.style.borderColor = color;
+    const color = getRoundColor();
+    targetAreaEl.style.setProperty("--round-accent", color);
+    boardEl.style.setProperty("--round-accent", color);
+    remainingDisplayEl.style.borderColor = color;
 }
-
 function renderTarget() {
-  const target = getCurrentTarget();
-  const remaining = getRemainingCount(target);
-
-  applyRoundColor();
-  targetEmojiEl.textContent = target;
-  targetStageEl.textContent = `お題 ${targetIndex + 1}/8`;
-  remainingDisplayEl.textContent = `残り${target}×${remaining}個`;
+    const target = getCurrentTarget();
+    const remaining = getRemainingCount(target);
+    applyRoundColor();
+    targetEmojiEl.textContent = target;
+    targetStageEl.textContent = t("\u304A\u984C {0}/8", targetIndex + 1);
+    remainingDisplayEl.textContent = t("\u6B8B\u308A{0}\u00D7{1}\u500B", target, remaining);
 }
-
 function renderPenaltyNote() {
-  penaltyNoteEl.textContent = `ヒント使用：${hintUseCount}回 ｜ ヒント加算：+${hintPenaltySeconds}秒`;
+    penaltyNoteEl.textContent = t("\u30D2\u30F3\u30C8\u4F7F\u7528\uFF1A{0}\u56DE \uFF5C \u30D2\u30F3\u30C8\u52A0\u7B97\uFF1A+{1}\u79D2", hintUseCount, hintPenaltySeconds);
 }
-
 function renderBoard() {
-  const target = getCurrentTarget();
-  const shouldShowWrongHint = currentTargetWrongCount >= 5;
-
-  boardEl.innerHTML = "";
-
-  board.forEach((cell, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "cell";
-    button.dataset.index = String(index);
-
-    if (cell.cleared) {
-      button.classList.add("is-cleared");
-      button.textContent = "";
-      button.setAttribute("aria-label", "空白マス");
-    } else {
-      button.textContent = cell.emoji;
-      button.setAttribute("aria-label", `${cell.emoji} のマス`);
-
-      if (shouldShowWrongHint && cell.emoji === target) {
-        button.classList.add("is-wrong-hint");
-      }
-
-      if (superHintActive && cell.emoji === target) {
-        button.classList.add("is-super-hint");
-      }
-    }
-
-    boardEl.appendChild(button);
-  });
+    const target = getCurrentTarget();
+    const shouldShowWrongHint = currentTargetWrongCount >= 5;
+    boardEl.innerHTML = "";
+    board.forEach((cell, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "cell";
+        button.dataset.index = String(index);
+        if (cell.cleared) {
+            button.classList.add("is-cleared");
+            button.textContent = "";
+            button.setAttribute("aria-label", t("\u7A7A\u767D\u30DE\u30B9"));
+        }
+        else {
+            button.textContent = cell.emoji;
+            button.setAttribute("aria-label", t("{0} \u306E\u30DE\u30B9", cell.emoji));
+            if (shouldShowWrongHint && cell.emoji === target) {
+                button.classList.add("is-wrong-hint");
+            }
+            if (superHintActive && cell.emoji === target) {
+                button.classList.add("is-super-hint");
+            }
+        }
+        boardEl.appendChild(button);
+    });
 }
-
 function getElapsedSeconds() {
-  if (!startTime) return 0;
-  return (performance.now() - startTime) / 1000;
+    if (!startTime)
+        return 0;
+    return (performance.now() - startTime) / 1000;
 }
-
 function updateTimer() {
-  timerEl.textContent = formatSeconds(getElapsedSeconds());
+    timerEl.textContent = formatSeconds(getElapsedSeconds());
 }
-
 function startTimer() {
-  stopTimer();
-  startTime = performance.now();
-  updateTimer();
-  timerId = window.setInterval(updateTimer, 100);
+    stopTimer();
+    startTime = performance.now();
+    updateTimer();
+    timerId = window.setInterval(updateTimer, 100);
 }
-
 function resumeTimerIfNeeded() {
-  if (!isPlaying || timerId !== null) return;
-  updateTimer();
-  timerId = window.setInterval(updateTimer, 100);
+    if (!isPlaying || timerId !== null)
+        return;
+    updateTimer();
+    timerId = window.setInterval(updateTimer, 100);
 }
-
 function stopTimer() {
-  if (timerId !== null) {
-    window.clearInterval(timerId);
-    timerId = null;
-  }
-}
-
-function stopCountdown() {
-  isCountingDown = false;
-
-  if (countdownTimerId !== null) {
-    window.clearTimeout(countdownTimerId);
-    countdownTimerId = null;
-  }
-}
-
-function cancelCountdownToHome() {
-  if (!isCountingDown) return;
-
-  stopCountdown();GameSound.play('early');
-  showScreen("home");
-  showToast("カウントダウンを中止しました");
-}
-
-function stopSuperHint() {
-  superHintActive = false;
-
-  if (superHintTimerId !== null) {
-    window.clearTimeout(superHintTimerId);
-    superHintTimerId = null;
-  }
-}
-
-function flashWrongTap() {
-  document.body.classList.remove("wrong-flash");
-  void document.body.offsetWidth;
-  document.body.classList.add("wrong-flash");
-
-  window.setTimeout(() => {
-    document.body.classList.remove("wrong-flash");
-  }, 170);
-}
-
-function startCountdown() {
-  if (isCountingDown) return;
-
-  GameSound.play('start');
-  const name = validateAndSaveName();
-  activePlay=scoreQueue.capture(name,CLIENT_VERSION);rankingRequest++;try{localStorage.removeItem(RESULT_KEY)}catch(_){}
-
-  stopCountdown();
-  stopTimer();
-  stopSuperHint();
-
-  board = [];
-  targetOrder = [];
-  targetIndex = 0;
-  totalWrongCount = 0;
-  currentTargetWrongCount = 0;
-  hintPenaltySeconds = 0;
-  hintUseCount = 0;
-  startTime = 0;
-  isPlaying = false;
-  isCountingDown = true;
-  lastResult = null;
-  submitSequence += 1;
-
-  showScreen("countdown");
-
-  const steps = ["3", "2", "1", "START"];
-  let stepIndex = 0;
-
-  const showNext = () => {
-    if (!isCountingDown) return;
-
-    countdownNumberEl.textContent = steps[stepIndex];
-    stepIndex += 1;
-
-    if (stepIndex >= steps.length) {
-      countdownTimerId = window.setTimeout(() => {
-        countdownTimerId = null;
-        isCountingDown = false;
-        startGame();
-      }, 520);
-      return;
+    if (timerId !== null) {
+        window.clearInterval(timerId);
+        timerId = null;
     }
-
-    countdownTimerId = window.setTimeout(showNext, 820);
-  };
-
-  showNext();
 }
-
+function stopCountdown() {
+    isCountingDown = false;
+    if (countdownTimerId !== null) {
+        window.clearTimeout(countdownTimerId);
+        countdownTimerId = null;
+    }
+}
+function cancelCountdownToHome() {
+    if (!isCountingDown)
+        return;
+    stopCountdown();
+    GameSound.play('early');
+    showScreen("home");
+    showToast(t("\u30AB\u30A6\u30F3\u30C8\u30C0\u30A6\u30F3\u3092\u4E2D\u6B62\u3057\u307E\u3057\u305F"));
+}
+function stopSuperHint() {
+    superHintActive = false;
+    if (superHintTimerId !== null) {
+        window.clearTimeout(superHintTimerId);
+        superHintTimerId = null;
+    }
+}
+function flashWrongTap() {
+    document.body.classList.remove("wrong-flash");
+    void document.body.offsetWidth;
+    document.body.classList.add("wrong-flash");
+    window.setTimeout(() => {
+        document.body.classList.remove("wrong-flash");
+    }, 170);
+}
+function startCountdown() {
+    if (isCountingDown)
+        return;
+    GameSound.play('start');
+    const name = validateAndSaveName();
+    activePlay = scoreQueue.capture(name, CLIENT_VERSION);rankingDisplayState='idle';rankingRows=[];
+    rankingRequest++;
+    try {
+        localStorage.removeItem(RESULT_KEY);
+    }
+    catch (_) { }
+    stopCountdown();
+    stopTimer();
+    stopSuperHint();
+    board = [];
+    targetOrder = [];
+    targetIndex = 0;
+    totalWrongCount = 0;
+    currentTargetWrongCount = 0;
+    hintPenaltySeconds = 0;
+    hintUseCount = 0;
+    startTime = 0;
+    isPlaying = false;
+    isCountingDown = true;
+    lastResult = null;
+    submitSequence += 1;
+    showScreen("countdown");
+    const steps = ["3", "2", "1", t("START")];
+    let stepIndex = 0;
+    const showNext = () => {
+        if (!isCountingDown)
+            return;
+        countdownNumberEl.textContent = steps[stepIndex];
+        stepIndex += 1;
+        if (stepIndex >= steps.length) {
+            countdownTimerId = window.setTimeout(() => {
+                countdownTimerId = null;
+                isCountingDown = false;
+                startGame();
+            }, 520);
+            return;
+        }
+        countdownTimerId = window.setTimeout(showNext, 820);
+    };
+    showNext();
+}
 function startGame() {
-  stopCountdown();
-  stopSuperHint();
-
-  board = buildBoard();
-  targetOrder = shuffle(EMOJIS);
-  targetIndex = 0;
-  totalWrongCount = 0;
-  currentTargetWrongCount = 0;
-  hintPenaltySeconds = 0;
-  hintUseCount = 0;
-  lastResult = null;
-  isPlaying = true;
-
-  showScreen("game");
-  renderTarget();
-  renderPenaltyNote();
-  renderBoard();
-  startTimer();
+    stopCountdown();
+    stopSuperHint();
+    board = buildBoard();
+    targetOrder = shuffle(EMOJIS);
+    targetIndex = 0;
+    totalWrongCount = 0;
+    currentTargetWrongCount = 0;
+    hintPenaltySeconds = 0;
+    hintUseCount = 0;
+    lastResult = null;
+    isPlaying = true;
+    showScreen("game");
+    renderTarget();
+    renderPenaltyNote();
+    renderBoard();
+    startTimer();
 }
-
 function finishGame(isRetired) {
-  if (!isPlaying) return;
-  GameSound.play('end');
-
-  const actualSeconds = getElapsedSeconds();
-  const wrongPenaltySeconds = totalWrongCount * WRONG_PENALTY_SECONDS;
-  const finalSeconds = actualSeconds + wrongPenaltySeconds + hintPenaltySeconds;
-  const scoreForRanking = Math.round(finalSeconds * SCORE_SCALE);
-
-  isPlaying = false;
-  stopTimer();
-  stopSuperHint();
-
-  const submitId = ++submitSequence;
-
-  lastResult = {
-    submitId,
-    isRetired,
-    playerName: currentPlayerName,
-    play: activePlay,
-    submissionState:isRetired?"retired":!currentPlayerName?"guest":activePlay?"pending":"failed",
-    actualSeconds,
-    wrongCount: totalWrongCount,
-    wrongPenaltySeconds,
-    hintUseCount,
-    hintPenaltySeconds,
-    finalSeconds,
-    scoreForRanking,
-    submitStatus: isRetired ? "リタイアのため送信なし" : "送信待ち",
-  };
-
-  if (isRetired) {
-    saveRetireResult();
-  } else {
-    saveClearScore(finalSeconds);
-  }
-
-  saveResultSnapshot();showResult(lastResult);void loadResultRanking(lastResult);
-  if (!isRetired && lastResult.playerName && lastResult.play) void submitScoreToSupabase(lastResult);
+    if (!isPlaying)
+        return;
+    GameSound.play('end');
+    const actualSeconds = getElapsedSeconds();
+    const wrongPenaltySeconds = totalWrongCount * WRONG_PENALTY_SECONDS;
+    const finalSeconds = actualSeconds + wrongPenaltySeconds + hintPenaltySeconds;
+    const scoreForRanking = Math.round(finalSeconds * SCORE_SCALE);
+    isPlaying = false;
+    stopTimer();
+    stopSuperHint();
+    const submitId = ++submitSequence;
+    lastResult = {
+        submitId,
+        isRetired,
+        playerName: currentPlayerName,
+        play: activePlay,
+        submissionState: isRetired ? "retired" : !currentPlayerName ? "guest" : activePlay ? "pending" : "failed",
+        actualSeconds,
+        wrongCount: totalWrongCount,
+        wrongPenaltySeconds,
+        hintUseCount,
+        hintPenaltySeconds,
+        finalSeconds,
+        scoreForRanking,
+        submitStatus: isRetired ? t("\u30EA\u30BF\u30A4\u30A2\u306E\u305F\u3081\u9001\u4FE1\u306A\u3057") : t("\u9001\u4FE1\u5F85\u3061"),
+    };
+    if (isRetired) {
+        saveRetireResult();
+    }
+    else {
+        saveClearScore(finalSeconds);
+    }
+    saveResultSnapshot();
+    showResult(lastResult);
+    void loadResultRanking(lastResult);
+    if (!isRetired && lastResult.playerName && lastResult.play)
+        void submitScoreToSupabase(lastResult);
 }
-
 function advanceTargetOrFinish() {
-  if (getRemainingCount() > 0) {
+    if (getRemainingCount() > 0) {
+        renderTarget();
+        renderBoard();
+        return;
+    }
+    targetIndex += 1;
+    if (targetIndex >= targetOrder.length) {
+        finishGame(false);
+        return;
+    }
+    currentTargetWrongCount = 0;
+    stopSuperHint();
     renderTarget();
     renderBoard();
-    return;
-  }
-
-  targetIndex += 1;
-
-  if (targetIndex >= targetOrder.length) {
-    finishGame(false);
-    return;
-  }
-
-  currentTargetWrongCount = 0;
-  stopSuperHint();
-  renderTarget();
-  renderBoard();
 }
-
 function handleBoardTap(event) {
-  if (!isPlaying) return;
-
-  const cellButton = event.target.closest(".cell");
-  if (!cellButton) return;
-
-  const index = Number(cellButton.dataset.index);
-  const cell = board[index];
-
-  if (!cell || cell.cleared) return;
-
-  if (cell.emoji === getCurrentTarget()) {
-    cell.cleared = true;
-    if(getRemainingCount()>0)GameSound.play('ok');else if(targetIndex+1<targetOrder.length)GameSound.play('milestone');
-    advanceTargetOrFinish();
-    return;
-  }
-
-  GameSound.play('hit');
-  totalWrongCount += 1;
-  currentTargetWrongCount += 1;
-
-  flashWrongTap();
-  renderBoard();
-}
-
-function useHint() {
-  if (!isPlaying) return;
-  GameSound.play('hint');
-
-  hintUseCount += 1;
-  hintPenaltySeconds += HINT_PENALTY_SECONDS;
-  superHintActive = true;
-
-  renderPenaltyNote();
-  renderBoard();
-  showToast(`ヒント使用：+${HINT_PENALTY_SECONDS}秒`);
-
-  if (superHintTimerId !== null) {
-    window.clearTimeout(superHintTimerId);
-  }
-
-  superHintTimerId = window.setTimeout(() => {
-    superHintActive = false;
-    superHintTimerId = null;
+    if (!isPlaying)
+        return;
+    const cellButton = event.target.closest(".cell");
+    if (!cellButton)
+        return;
+    const index = Number(cellButton.dataset.index);
+    const cell = board[index];
+    if (!cell || cell.cleared)
+        return;
+    if (cell.emoji === getCurrentTarget()) {
+        cell.cleared = true;
+        if (getRemainingCount() > 0)
+            GameSound.play('ok');
+        else if (targetIndex + 1 < targetOrder.length)
+            GameSound.play('milestone');
+        advanceTargetOrFinish();
+        return;
+    }
+    GameSound.play('hit');
+    totalWrongCount += 1;
+    currentTargetWrongCount += 1;
+    flashWrongTap();
     renderBoard();
-  }, 2000);
 }
-
+function useHint() {
+    if (!isPlaying)
+        return;
+    GameSound.play('hint');
+    hintUseCount += 1;
+    hintPenaltySeconds += HINT_PENALTY_SECONDS;
+    superHintActive = true;
+    renderPenaltyNote();
+    renderBoard();
+    showToast(t("\u30D2\u30F3\u30C8\u4F7F\u7528\uFF1A+{0}\u79D2", HINT_PENALTY_SECONDS));
+    if (superHintTimerId !== null) {
+        window.clearTimeout(superHintTimerId);
+    }
+    superHintTimerId = window.setTimeout(() => {
+        superHintActive = false;
+        superHintTimerId = null;
+        renderBoard();
+    }, 2000);
+}
 function setSubmitStatus(text, statusClass = "") {
-  submitStatusEl.textContent = text;
-  submitStatusEl.className = statusClass;
+    submitStatusEl.textContent = text;
+    submitStatusEl.className = statusClass;
 }
-
 function showResult(result) {
-  updateBestScoreView();
-
-  resultPlayerEl.textContent = result.playerName || "未入力";
-  actualScoreEl.textContent = formatSeconds(result.actualSeconds);
-  wrongCountEl.textContent = `${result.wrongCount}回（+${result.wrongPenaltySeconds}秒）`;
-  hintPenaltyEl.textContent = `${result.hintUseCount}回（+${result.hintPenaltySeconds}秒）`;
-
-  if (result.isRetired) {
-    resultStatusEl.textContent = "リタイア";
-    resultStatusEl.classList.add("is-retired");
-    finalScoreEl.textContent = "リタイア";
-    setSubmitStatus("送信なし（リタイア）", "submit-warn");
-  } else {
-    resultStatusEl.textContent = "クリア！";
-    resultStatusEl.classList.remove("is-retired");
-    finalScoreEl.textContent = formatSeconds(result.finalSeconds);
-    setSubmitStatus("送信中...", "submit-warn");
-  }
-
-  renderSubmissionStatus(result);showScreen("result");
+    updateBestScoreView();
+    resultPlayerEl.textContent = result.playerName || t("\u672A\u5165\u529B");
+    actualScoreEl.textContent = formatSeconds(result.actualSeconds);
+    wrongCountEl.textContent = t("{0}\u56DE\uFF08+{1}\u79D2\uFF09", result.wrongCount, result.wrongPenaltySeconds);
+    hintPenaltyEl.textContent = t("{0}\u56DE\uFF08+{1}\u79D2\uFF09", result.hintUseCount, result.hintPenaltySeconds);
+    if (result.isRetired) {
+        resultStatusEl.textContent = t("\u30EA\u30BF\u30A4\u30A2");
+        resultStatusEl.classList.add("is-retired");
+        finalScoreEl.textContent = t("\u30EA\u30BF\u30A4\u30A2");
+        setSubmitStatus(t("\u9001\u4FE1\u306A\u3057\uFF08\u30EA\u30BF\u30A4\u30A2\uFF09"), "submit-warn");
+    }
+    else {
+        resultStatusEl.textContent = t("\u30AF\u30EA\u30A2\uFF01");
+        resultStatusEl.classList.remove("is-retired");
+        finalScoreEl.textContent = formatSeconds(result.finalSeconds);
+        setSubmitStatus(t("\u9001\u4FE1\u4E2D..."), "submit-warn");
+    }
+    renderSubmissionStatus(result);
+    showScreen("result");
 }
-
 function isCurrentResult(result) {
-  return lastResult === result && result && result.submitId === submitSequence;
+    return lastResult === result && result && result.submitId === submitSequence;
 }
-
-async function callRpc(fn,payload){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json',apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`},body:JSON.stringify(payload)});const data=await response.json().catch(()=>null);if(!response.ok)throw Object.assign(new Error(fn+' '+response.status),{code:data?.code});return data;}finally{clearTimeout(timer);}}
-function saveResultSnapshot(){if(!lastResult)return;try{localStorage.setItem(RESULT_KEY,JSON.stringify(lastResult));}catch(_){}}
-function renderSubmissionStatus(result){const labels={retired:'送信なし（リタイア）',guest:'名前なしでプレイしたため、この結果はランキングへ送信しません。',pending:'記録は送信待ちです。同じ記録を再送できます。',sending:'送信中...',submitted:'送信完了',failed:'送信に失敗しました。今回の結果は保持されています。',rejected:'記録を送信できませんでした。今回の結果は保持されています。'};setSubmitStatus(labels[result.submissionState]||labels.failed,result.submissionState==='submitted'?'submit-ok':'submit-warn');document.getElementById('submission-retry').hidden=!(result.play&&['pending','failed'].includes(result.submissionState));document.getElementById('pending-retry-home').hidden=scoreQueue.list().length===0;}
-async function submitScoreToSupabase(result){if(!isCurrentResult(result)||result.isRetired||!result.playerName||!result.play||result.submissionState==='submitted')return;try{scoreQueue.enqueue(result.play,result.scoreForRanking,result);await scoreQueue.drain();}catch(_){if(isCurrentResult(result)){result.submissionState='failed';saveResultSnapshot();renderSubmissionStatus(result);}}}
-async function loadResultRanking(result=lastResult){if(!result)return;const request=++rankingRequest,status=document.getElementById('ranking-read-status'),list=document.getElementById('result-ranking');status.textContent='読み込み中...';list.replaceChildren();try{const raw=await callRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:30});if(!isCurrentResult(result)||request!==rankingRequest)return;const rows=Array.isArray(raw)?raw:[];list.replaceChildren(...rows.slice(0,30).map((r,i)=>{const li=document.createElement('li');li.value=Number(r.rank_no??i+1);const name=document.createElement('span'),score=document.createElement('strong');name.textContent=String(r.display_name??r.player_name??'');score.textContent=formatSeconds(Number(r.score??r.best_score??0)/SCORE_SCALE);li.append(name,document.createTextNode('：'),score);return li;}));status.textContent=rows.length?'':'まだ記録がありません。';}catch(_){if(!isCurrentResult(result)||request!==rankingRequest)return;status.textContent='ランキングを取得できませんでした。「ランキングを再取得」で再試行できます。';}}
-function restoreResultSnapshot(){let saved;try{saved=JSON.parse(localStorage.getItem(RESULT_KEY)||'null')}catch(_){return false;}if(!saved||typeof saved.playerName!=='string'||typeof saved.isRetired!=='boolean'||!Number.isInteger(saved.submitId)||!Number.isInteger(saved.scoreForRanking)||saved.scoreForRanking<0||!['actualSeconds','finalSeconds','wrongCount','wrongPenaltySeconds','hintUseCount','hintPenaltySeconds'].every(k=>Number.isFinite(saved[k])&&saved[k]>=0))return false;lastResult=saved;submitSequence=saved.submitId;showResult(saved);void loadResultRanking(saved);return true;}
-let queueStorage=null;try{queueStorage=localStorage;}catch(_){}
-scoreQueue=CommonScoreQueue.createScoreQueue({gameSlug:GAME_SLUG,storage:queueStorage,send:p=>callRpc('submit_score_once_shared_v1',p),onChange(item,receipt){document.getElementById('pending-retry-home').hidden=scoreQueue.list().length===0;if(!lastResult||lastResult.play?.id!==item.id)return;lastResult.submissionState=item.state==='pending'&&lastResult.submissionState==='sending'?'failed':item.state;saveResultSnapshot();renderSubmissionStatus(lastResult);if(receipt)void loadResultRanking(lastResult);}});
-
+async function callRpc(fn, payload) { const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 8000); try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: 'POST', signal: controller.signal, headers: { 'Content-Type': 'application/json', apikey: SUPABASE_PUBLISHABLE_KEY, Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}` }, body: JSON.stringify(payload) });
+    const data = await response.json().catch(() => null);
+    if (!response.ok)
+        throw Object.assign(new Error(fn + ' ' + response.status), { code: data?.code });
+    return data;
+}
+finally {
+    clearTimeout(timer);
+} }
+function saveResultSnapshot() { if (!lastResult)
+    return; try {
+    localStorage.setItem(RESULT_KEY, JSON.stringify(lastResult));
+}
+catch (_) { } }
+function renderSubmissionStatus(result) { const labels = { retired: t("\u9001\u4FE1\u306A\u3057\uFF08\u30EA\u30BF\u30A4\u30A2\uFF09"), guest: t("\u540D\u524D\u306A\u3057\u3067\u30D7\u30EC\u30A4\u3057\u305F\u305F\u3081\u3001\u3053\u306E\u7D50\u679C\u306F\u30E9\u30F3\u30AD\u30F3\u30B0\u3078\u9001\u4FE1\u3057\u307E\u305B\u3093\u3002"), pending: t("\u8A18\u9332\u306F\u9001\u4FE1\u5F85\u3061\u3067\u3059\u3002\u540C\u3058\u8A18\u9332\u3092\u518D\u9001\u3067\u304D\u307E\u3059\u3002"), sending: t("\u9001\u4FE1\u4E2D..."), submitted: t("\u9001\u4FE1\u5B8C\u4E86"), failed: t("\u9001\u4FE1\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u4ECA\u56DE\u306E\u7D50\u679C\u306F\u4FDD\u6301\u3055\u308C\u3066\u3044\u307E\u3059\u3002"), rejected: t("\u8A18\u9332\u3092\u9001\u4FE1\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u4ECA\u56DE\u306E\u7D50\u679C\u306F\u4FDD\u6301\u3055\u308C\u3066\u3044\u307E\u3059\u3002") }; setSubmitStatus(labels[result.submissionState] || labels.failed, result.submissionState === 'submitted' ? 'submit-ok' : 'submit-warn'); document.getElementById('submission-retry').hidden = !(result.play && ['pending', 'failed'].includes(result.submissionState)); document.getElementById('pending-retry-home').hidden = scoreQueue.list().length === 0; }
+async function submitScoreToSupabase(result) { if (!isCurrentResult(result) || result.isRetired || !result.playerName || !result.play || result.submissionState === 'submitted')
+    return; try {
+    scoreQueue.enqueue(result.play, result.scoreForRanking, result);
+    await scoreQueue.drain();
+}
+catch (_) {
+    if (isCurrentResult(result)) {
+        result.submissionState = 'failed';
+        saveResultSnapshot();
+        renderSubmissionStatus(result);
+    }
+} }
+function parseLeaderboard(data){if(!Array.isArray(data)||data.some(r=>!r||!Number.isSafeInteger(r.rank_no)||r.rank_no<1||typeof r.display_name!=='string'||!Number.isInteger(r.best_score)))throw new Error('Invalid leaderboard response');return data;}
+function renderResultRanking(){const status=document.getElementById('ranking-read-status'),list=document.getElementById('result-ranking');if(rankingDisplayState!=='loaded'){list.replaceChildren();status.textContent=rankingDisplayState==='loading'?t('読み込み中...'):rankingDisplayState==='failed'?t('ランキングを取得できませんでした。「ランキングを再取得」で再試行できます。'):'';return;}list.replaceChildren(...rankingRows.slice(0,30).map((r,i)=>{const li=document.createElement('li');li.value=r.rank_no;const name=document.createElement('span'),score=document.createElement('strong');name.textContent=r.display_name;score.textContent=formatSeconds(r.best_score/SCORE_SCALE);li.append(name,document.createTextNode('：'),score);return li;}));status.textContent=rankingRows.length?'':t('まだ記録がありません。');}
+async function loadResultRanking(result=lastResult){if(!result)return;const request=++rankingRequest;rankingDisplayState='loading';rankingRows=[];renderResultRanking();try{const raw=await callRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:30});if(!isCurrentResult(result)||request!==rankingRequest)return;rankingRows=parseLeaderboard(raw);rankingDisplayState='loaded';renderResultRanking();}catch(_){if(!isCurrentResult(result)||request!==rankingRequest)return;rankingDisplayState='failed';renderResultRanking();}}
+function restoreResultSnapshot() { let saved; try {
+    saved = JSON.parse(localStorage.getItem(RESULT_KEY) || 'null');
+}
+catch (_) {
+    return false;
+} if (!saved || typeof saved.playerName !== 'string' || typeof saved.isRetired !== 'boolean' || !Number.isInteger(saved.submitId) || !Number.isInteger(saved.scoreForRanking) || saved.scoreForRanking < 0 || !['actualSeconds', 'finalSeconds', 'wrongCount', 'wrongPenaltySeconds', 'hintUseCount', 'hintPenaltySeconds'].every(k => Number.isFinite(saved[k]) && saved[k] >= 0))
+    return false; lastResult = saved; submitSequence = saved.submitId; showResult(saved); void loadResultRanking(saved); return true; }
+let queueStorage = null;
+try {
+    queueStorage = localStorage;
+}
+catch (_) { }
+scoreQueue = CommonScoreQueue.createScoreQueue({ gameSlug: GAME_SLUG, storage: queueStorage, send: p => callRpc('submit_score_once_shared_v1', p), onChange(item, receipt) { document.getElementById('pending-retry-home').hidden = scoreQueue.list().length === 0; if (!lastResult || lastResult.play?.id !== item.id)
+        return; lastResult.submissionState = item.state === 'pending' && lastResult.submissionState === 'sending' ? 'failed' : item.state; saveResultSnapshot(); renderSubmissionStatus(lastResult); if (receipt)
+        void loadResultRanking(lastResult); } });
 function buildGameShareText() {
-  return [
-    GAME_TITLE,
-    GAME_DESCRIPTION,
-    getGameUrl(),
-  ].join("\n");
-}
-
-function buildResultShareText() {
-  if (!lastResult) {
-    return buildGameShareText();
-  }
-
-  if (lastResult.isRetired) {
     return [
-      `${GAME_TITLE} 結果`,
-      "",
-      "結果：リタイア",
-      `経過秒数：${formatSeconds(lastResult.actualSeconds)}`,
-      `誤タップ：${lastResult.wrongCount}回`,
-      `ヒント：${lastResult.hintUseCount}回`,
-      "",
-      "8×8の絵文字拾いに挑戦！",
-      getGameUrl(),
+        t(GAME_TITLE),
+        t(GAME_DESCRIPTION),
+        getGameUrl(),
     ].join("\n");
-  }
-
-  return [
-    `${GAME_TITLE} 結果`,
-    "",
-    `実際の秒数：${formatSeconds(lastResult.actualSeconds)}`,
-    `誤タップ：${lastResult.wrongCount}回（+${lastResult.wrongPenaltySeconds}秒）`,
-    `ヒント：${lastResult.hintUseCount}回（+${lastResult.hintPenaltySeconds}秒）`,
-    `最終秒数：${formatSeconds(lastResult.finalSeconds)}`,
-    "",
-    "8×8の絵文字拾いに挑戦！",
-    getGameUrl(),
-  ].join("\n");
 }
-
+function buildResultShareText() {
+    if (!lastResult) {
+        return buildGameShareText();
+    }
+    if (lastResult.isRetired) {
+        return [
+            t("{0} \u7D50\u679C", t(GAME_TITLE)),
+            "",
+            t("\u7D50\u679C\uFF1A\u30EA\u30BF\u30A4\u30A2"),
+            t("\u7D4C\u904E\u79D2\u6570\uFF1A{0}", formatSeconds(lastResult.actualSeconds)),
+            t("\u8AA4\u30BF\u30C3\u30D7\uFF1A{0}\u56DE", lastResult.wrongCount),
+            t("\u30D2\u30F3\u30C8\uFF1A{0}\u56DE", lastResult.hintUseCount),
+            "",
+            t("8\u00D78\u306E\u7D75\u6587\u5B57\u62FE\u3044\u306B\u6311\u6226\uFF01"),
+            getGameUrl(),
+        ].join("\n");
+    }
+    return [
+        t("{0} \u7D50\u679C", t(GAME_TITLE)),
+        "",
+        t("\u5B9F\u969B\u306E\u79D2\u6570\uFF1A{0}", formatSeconds(lastResult.actualSeconds)),
+        t("\u8AA4\u30BF\u30C3\u30D7\uFF1A{0}\u56DE\uFF08+{1}\u79D2\uFF09", lastResult.wrongCount, lastResult.wrongPenaltySeconds),
+        t("\u30D2\u30F3\u30C8\uFF1A{0}\u56DE\uFF08+{1}\u79D2\uFF09", lastResult.hintUseCount, lastResult.hintPenaltySeconds),
+        t("\u6700\u7D42\u79D2\u6570\uFF1A{0}", formatSeconds(lastResult.finalSeconds)),
+        "",
+        t("8\u00D78\u306E\u7D75\u6587\u5B57\u62FE\u3044\u306B\u6311\u6226\uFF01"),
+        getGameUrl(),
+    ].join("\n");
+}
 function fallbackCopy(text) {
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  textarea.setAttribute("readonly", "");
-  textarea.style.position = "fixed";
-  textarea.style.left = "-9999px";
-  textarea.style.top = "0";
-  document.body.appendChild(textarea);
-  textarea.focus();
-  textarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textarea);
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    textarea.style.top = "0";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
 }
-
 async function copyToClipboard(text) {
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-    } else {
-      fallbackCopy(text);
-    }
-
-    showToast();
-  } catch (error) {
     try {
-      fallbackCopy(text);
-      showToast();
-    } catch (fallbackError) {
-      showToast("コピーできませんでした");
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+        }
+        else {
+            fallbackCopy(text);
+        }
+        showToast();
     }
-  }
+    catch (error) {
+        try {
+            fallbackCopy(text);
+            showToast();
+        }
+        catch (fallbackError) {
+            showToast(t("\u30B3\u30D4\u30FC\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F"));
+        }
+    }
 }
-
 function openRuleModal() {
-  ruleModal.classList.add("is-open");
-  ruleModal.setAttribute("aria-hidden", "false");
+    ruleModal.classList.add("is-open");
+    ruleModal.setAttribute("aria-hidden", "false");
 }
-
 function closeRuleModal() {
-  ruleModal.classList.remove("is-open");
-  ruleModal.setAttribute("aria-hidden", "true");
+    ruleModal.classList.remove("is-open");
+    ruleModal.setAttribute("aria-hidden", "true");
 }
-
 bindTap(startButton, startCountdown);
-bindTap(retryButton,()=>{updateBestScoreView();showScreen("home");});
-bindTap(document.getElementById("ranking-retry"),()=>{void loadResultRanking();});
-bindTap(document.getElementById("submission-retry"),()=>{void scoreQueue.drain();});
-bindTap(document.getElementById("pending-retry-home"),()=>{void scoreQueue.drain();});
-playerNameInput.addEventListener("input",()=>savePlayerName(getPlayerName()));
-
+bindTap(retryButton, () => { updateBestScoreView(); showScreen("home"); });
+bindTap(document.getElementById("ranking-retry"), () => { void loadResultRanking(); });
+bindTap(document.getElementById("submission-retry"), () => { void scoreQueue.drain(); });
+bindTap(document.getElementById("pending-retry-home"), () => { void scoreQueue.drain(); });
+playerNameInput.addEventListener("input", () => savePlayerName(getPlayerName()));
 bindTap(homeButton, () => {
-  updateBestScoreView();
-  showScreen("home");
+    updateBestScoreView();
+    showScreen("home");
 });
-
 bindTap(retireButton, () => {
-  finishGame(true);
+    finishGame(true);
 });
-
 bindTap(boardEl, handleBoardTap);
 bindTap(hintButton, useHint);
 bindTap(ruleButton, openRuleModal);
 bindTap(closeRuleButton, closeRuleModal);
-
 bindTap(shareGameButton, () => {
-  window.openGameShareX(buildGameShareText());
+    window.openGameShareX(buildGameShareText());
 });
-
 bindTap(shareResultButton, () => {
-  window.openGameShareX(buildResultShareText());
+    window.openGameShareX(buildResultShareText());
 });
-
 ruleModal.addEventListener("click", (event) => {
-  if (event.target === ruleModal) {
-    closeRuleModal();
-  }
+    if (event.target === ruleModal) {
+        closeRuleModal();
+    }
 });
-
 window.addEventListener("pagehide", () => {
-  cancelCountdownToHome();
-  stopSuperHint();
-  stopTimer();
-});
-
-window.addEventListener("pageshow", () => {
-  resumeTimerIfNeeded();
-});
-
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") {
     cancelCountdownToHome();
-    return;
-  }
-
-  if (document.visibilityState === "visible") {
-    resumeTimerIfNeeded();
-    updateTimer();
-  }
+    stopSuperHint();
+    stopTimer();
 });
-
+window.addEventListener("pageshow", () => {
+    resumeTimerIfNeeded();
+});
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+        cancelCountdownToHome();
+        return;
+    }
+    if (document.visibilityState === "visible") {
+        resumeTimerIfNeeded();
+        updateTimer();
+    }
+});
+window.addEventListener('game-language-change',()=>{updateBestScoreView();if(isPlaying){renderTarget();renderPenaltyNote();renderBoard();updateTimer();}if(lastResult&&screens.result.classList.contains('is-active')){showResult(lastResult);renderResultRanking();}});
 installMobileGuards();
 playerNameInput.value = loadPlayerName();
-
 updateBestScoreView();
-if(!restoreResultSnapshot())showScreen("home");
-document.getElementById("pending-retry-home").hidden=scoreQueue.list().length===0;void scoreQueue.drain();
-
-  </script>
+if (!restoreResultSnapshot())
+    showScreen("home");
+document.getElementById("pending-retry-home").hidden = scoreQueue.list().length === 0;
+void scoreQueue.drain();
+</script>
 </body>
 </html>
