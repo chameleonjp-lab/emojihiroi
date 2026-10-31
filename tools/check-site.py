@@ -56,6 +56,9 @@ def main():
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
     if '<html' not in html.lower() or '</html>' not in html.lower():
         raise ValueError('index.html is not a complete HTML document')
+    queue = (ROOT / "tools/score-queue.cjs").read_text(encoding="utf-8")
+    if "<script id=\"score-queue\">\n" + queue + "</script>" not in html:
+        raise ValueError("Embedded score queue differs from tested source")
     page = Page()
     page.feed(html)
     if page.local_assets:

@@ -727,20 +727,20 @@ body.wrong-flash::after {
           8種類すべて拾うまでのタイムを競うゲームです。
         </p>
 
-        <div class="name-box">
-          <label for="player-name">名前（必須）</label>
-          <input id="player-name" class="name-input" type="text" inputmode="text" autocomplete="nickname" maxlength="10" placeholder="名前を入力">
-          <p class="name-help">ランキング登録に使います。10文字までです。</p>
+        <div class="audio-settings"><label for="soundToggle">効果音</label><button id="soundToggle" class="button button-secondary" type="button" aria-pressed="true">オン</button><label for="soundVolume">音量</label><input id="soundVolume" type="range" min="0" max="1" step="0.05" value="0.5"></div><div class="name-box">
+          <label for="player-name">名前（任意・10文字まで）</label>
+          <input id="player-name" class="name-input" type="text" inputmode="text" autocomplete="nickname" placeholder="名前を入力">
+          <p class="name-help">名前を入力すると、名前と記録がランキングに公開されます。空欄でも遊べます。</p>
         </div>
 
         <div class="rule-box">
           <p>間違えると、結果で1回につき+5秒されます。</p>
           <p>ヒントは何度でも使えますが、1回につき+45秒されます。</p>
-          <p>クリア時はランキングへ自動送信します。リタイアは送信しません。</p>
+          <p>開始時に名前があるプレイのクリア結果をランキングへ自動送信します。名前なしとリタイアは送信しません。</p>
         </div>
 
         <div class="button-stack">
-          <button id="start-button" class="button button-primary" type="button">ゲーム開始</button>
+          <button id="pending-retry-home" class="button button-secondary" type="button" hidden>未送信の記録を再送</button><button id="start-button" class="button button-primary" type="button">ゲーム開始</button>
           <button id="rule-button" class="button button-secondary" type="button">ルール説明</button>
           <button id="share-game-button" class="button button-secondary common-x-share" type="button">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=emojihiroi">ランキング</a>
           <a class="button button-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/">他のゲームで遊ぶ</a>
@@ -819,6 +819,9 @@ body.wrong-flash::after {
           <button id="home-button" class="button button-secondary" type="button">ゲーム終了</button>
           <a class="button button-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/">他のゲームで遊ぶ</a>
         </div>
+        <button id="submission-retry" class="button button-secondary" type="button" hidden>送信を再試行</button>
+        <h2>ランキング</h2><p id="ranking-read-status" role="status"></p><ol id="result-ranking"></ol>
+        <button id="ranking-retry" class="button button-secondary" type="button">ランキングを再取得</button>
       </div>
     </section>
   </main>
@@ -833,7 +836,7 @@ body.wrong-flash::after {
         <li>間違えると、結果で1回につき+5秒されます。</li>
         <li>同じお題で5回間違えると、対象マスの縁が赤く点滅します。</li>
         <li>ヒントボタンを使うと、対象マスの縁が2秒間光ります。1回につき+45秒です。</li>
-        <li>クリア時はランキングへ自動送信します。リタイアは送信しません。</li>
+        <li>開始時に名前があるプレイのクリア結果をランキングへ自動送信します。名前なしとリタイアは送信しません。</li>
         <li>ベストスコアはこのブラウザ内に保存されます。保存データを消すと記録が消える場合があります。</li>
       </ul>
       <button id="close-rule-button" class="button button-primary" type="button">閉じる</button>
@@ -846,6 +849,8 @@ body.wrong-flash::after {
 button.common-x-share { background:#000 !important; color:#fff !important; border:1px solid #555; white-space:normal; overflow-wrap:anywhere; min-height:44px; padding:12px 16px; line-height:1.4; }
 .common-ranking-link { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:44px; padding:12px 16px; border:1px solid currentColor; border-radius:10px; color:inherit; text-decoration:none; white-space:normal; overflow-wrap:anywhere; line-height:1.4; }
 #commonShareFallback { box-sizing:border-box; width:min(92vw,32rem); max-height:85dvh; overflow:auto; border:1px solid #777; border-radius:12px; padding:20px; background:#fff; color:#111; }
+.audio-settings{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;margin:16px 0}.audio-settings input{width:100%;min-height:44px}
+#result-ranking li{overflow-wrap:anywhere;margin:8px 0}#submission-retry,#ranking-retry{margin-top:16px}
 #commonShareFallback::backdrop { background:#0009; }
 #commonShareFallback textarea { box-sizing:border-box; width:100%; min-height:160px; padding:10px; font:16px/1.5 sans-serif; color:#111; background:#fff; user-select:text; -webkit-user-select:text; }
 #commonShareFallback button { min-height:44px; margin:6px; padding:10px 16px; white-space:normal; color:#fff; background:#222; }
@@ -900,10 +905,112 @@ button.common-x-share { background:#000 !important; color:#fff !important; borde
 </script>
 
 <script>
+/* Sound events follow visible outcomes; failures never block gameplay. */
+(()=>{
+ const read=(key,fallback)=>{try{const v=localStorage.getItem(key);return v===null?fallback:v;}catch(_){return fallback;}};
+ let enabled=read('emojihiroi:sound','on')!=='off';
+ const saved=read('emojihiroi:volume',null);let volume=saved===null||String(saved).trim()===''||!Number.isFinite(Number(saved))||Number(saved)<0||Number(saved)>1?.5:Number(saved);
+ let context=null,last=-Infinity;const voices=new Set();
+ const tones={start:[440,660],perfect:[660,880],ok:[440,550],early:[220,160],hit:[150,90],milestone:[660,880,1100],end:[440,330,220],hint:[440,880]};
+ function persist(){try{localStorage.setItem('emojihiroi:sound',enabled?'on':'off');localStorage.setItem('emojihiroi:volume',String(volume));}catch(_){}}
+ function stop(){for(const voice of [...voices]){try{voice.o.stop()}catch(_){}try{voice.o.disconnect();voice.g.disconnect()}catch(_){}voices.delete(voice);}}
+ function unlock(){if(!enabled||volume===0||document.hidden)return;try{if(!context){const A=window.AudioContext||window.webkitAudioContext;if(!A)return;context=new A();}if(context.state!=='running')Promise.resolve(context.resume()).catch(()=>{});}catch(_){}}
+ function play(kind){try{if(!enabled||volume===0||document.hidden)return;unlock();if(!context||context.state!=='running'||!tones[kind])return;const now=context.currentTime;if(kind!=='end'&&kind!=='milestone'&&now-last<.08)return;if(kind==='end'||kind==='milestone')stop();last=now;const pitch=tones[kind],step=.085;for(let i=0;i<pitch.length;i++){if(voices.size>=6)break;const o=context.createOscillator(),g=context.createGain(),at=now+i*step,v={o,g};voices.add(v);o.type=kind==='hit'?'triangle':'sine';o.frequency.setValueAtTime(pitch[i],at);g.gain.setValueAtTime(0,at);g.gain.linearRampToValueAtTime(volume*.1,at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+.12);o.connect(g);g.connect(context.destination);o.onended=()=>{voices.delete(v);try{o.disconnect();g.disconnect();}catch(_){}};o.start(at);o.stop(at+.13);}}catch(_){stop();}}
+ function render(){const button=document.getElementById('soundToggle');button.textContent=enabled?'オン':'オフ';button.setAttribute('aria-pressed',String(enabled));document.getElementById('soundVolume').value=String(volume);}
+ function setEnabled(value){enabled=Boolean(value);if(!enabled)stop();persist();render();if(enabled)unlock();}
+ function setVolume(value){const n=Number(value);if(!Number.isFinite(n)||n<0||n>1)return;volume=n;if(volume===0)stop();persist();render();if(volume>0)unlock();}
+ document.getElementById('soundToggle').addEventListener('click',()=>setEnabled(!enabled));
+ document.getElementById('soundVolume').addEventListener('input',e=>setVolume(e.target.value));
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();try{if(context)Promise.resolve(context.suspend()).catch(()=>{});}catch(_){}}});
+ window.addEventListener('game-language-change',render);
+ window.GameSound={play,unlock,setEnabled,setVolume,stop,getState:()=>({enabled,volume,voices:voices.size})};render();
+})();
+</script>
+<script id="score-queue">
+(function (root) {
+  'use strict';
+  const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const copy = value => JSON.parse(JSON.stringify(value));
+  function createScoreQueue({gameSlug, storage = null, send, onChange = () => {}, uuid = () => root.crypto.randomUUID()}) {
+    const prefix = gameSlug + ':score-pending:v1:';
+    const memory = new Map();
+    let operation = null;
+    function valid(item) {
+      const p = item?.payload;
+      return UUID.test(item?.id || '') && p?.p_submission_id === item.id && p.p_game_slug === gameSlug &&
+        typeof p.p_display_name === 'string' && p.p_display_name.trim() !== '' &&
+        typeof p.p_client_version === 'string' && Number.isInteger(p.p_score) && p.p_score >= 0;
+    }
+    function save(item) {
+      memory.set(item.id, copy(item));
+      try { storage?.setItem(prefix + item.id, JSON.stringify(item)); } catch { /* Keep this session usable. */ }
+      return item;
+    }
+    function list() {
+      try {
+        if (storage) for (let i = 0; i < storage.length; i++) {
+          const key = storage.key(i);
+          if (!key?.startsWith(prefix)) continue;
+          try { const item = JSON.parse(storage.getItem(key)); if (valid(item)) memory.set(item.id, item); } catch { /* Preserve malformed data without sending it. */ }
+        }
+      } catch { /* Memory contains records saved in this session. */ }
+      return [...memory.values()].map(copy).sort((a,b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
+    }
+    function notify(item, receipt = null) { try { onChange(copy(item), receipt && copy(receipt)); } catch {} }
+    function capture(name, clientVersion) {
+      if (!name?.trim()) return null;
+      try { const id = uuid(); if (!UUID.test(id)) return null; return Object.freeze({id, name:name.trim(), clientVersion}); }
+      catch { return null; }
+    }
+    function enqueue(play, score, presentation = null) {
+      if (!play) return null;
+      const existing = list().find(item => item.id === play.id);
+      const payload = {p_submission_id:play.id,p_display_name:play.name,p_game_slug:gameSlug,p_score:score,p_client_version:play.clientVersion};
+      if (existing) {
+        if (JSON.stringify(existing.payload) !== JSON.stringify(payload)) throw new Error('A finalized play cannot change');
+        return existing;
+      }
+      const item = {id:play.id,payload,presentation:copy(presentation),createdAt:Date.now(),state:'pending'};
+      if (!valid(item)) throw new Error('Invalid finalized score');
+      save(item);notify(item);return copy(item);
+    }
+    function drain() {
+      if (operation) return operation;
+      operation = (async () => {
+        const attempted = new Set();
+        for (;;) {
+          const item = list().find(value => !attempted.has(value.id) && value.state !== 'rejected');
+          if (!item) break;
+          attempted.add(item.id);item.state='sending';save(item);notify(item);
+          try {
+            const response = await send(copy(item.payload));
+            const receipt = Array.isArray(response) ? response[0] : response;
+            if (receipt?.accepted !== true) { const error=new Error('Score rejected');error.code='PT422';throw error; }
+            if (receipt.result_display_name !== item.payload.p_display_name || receipt.result_normalized_name !== item.payload.p_display_name || !Number.isInteger(receipt.result_first_score) || !Number.isInteger(receipt.result_best_score) || !Number.isInteger(receipt.result_play_count) || receipt.result_play_count < 1 || typeof receipt.was_duplicate !== 'boolean') throw new Error('Invalid score acknowledgement');
+            item.state='submitted';
+            memory.delete(item.id);
+            try { storage?.removeItem(prefix + item.id); } catch { /* Same ID is safe to retry after reload. */ }
+            notify(item, receipt);
+          } catch (error) {
+            item.state = ['PT409','PT422','22023','22001','22003'].includes(error?.code) ? 'rejected' : 'pending';
+            save(item);notify(item);
+          }
+        }
+      })().finally(() => { operation=null; });
+      return operation;
+    }
+    return {capture,enqueue,list,drain,prefix};
+  }
+  const api={createScoreQueue};
+  if (typeof module === 'object' && module.exports) module.exports=api;
+  root.CommonScoreQueue=api;
+})(typeof globalThis === 'object' ? globalThis : this);
+</script>
+<script>
 const GAME_TITLE = "絵文字拾い";
 const GAME_DESCRIPTION = "8×8の中から、お題の絵文字を探して全部拾うタイムアタックゲームです。";
 const GAME_SLUG = "emojihiroi";
-const CLIENT_VERSION = "emojihiroi_single_v2.8_20260610";
+const CLIENT_VERSION = "emojihiroi-common-20261031";
 const LAB_URL = "https://chameleonjp-lab.github.io/chameleonjp_lab/";
 
 const SUPABASE_URL = "https://mlpnjgezrnhdxsxolyzj.supabase.co";
@@ -973,7 +1080,8 @@ let isPlaying = false;
 let isCountingDown = false;
 let lastResult = null;
 let currentPlayerName = "";
-let submitSequence = 0;
+let submitSequence = 0, rankingRequest = 0, activePlay = null;
+const RESULT_KEY="emojihiroi:last-result:v1";let scoreQueue;
 
 function isNativeInteractionAllowed(target) {
   if (!target || typeof target.closest !== "function") return false;
@@ -1157,17 +1265,11 @@ function updateBestScoreView() {
 }
 
 function getPlayerName() {
-  return playerNameInput.value.trim().slice(0, 10);
+  return Array.from(playerNameInput.value.trim()).slice(0,10).join("");
 }
 
 function validateAndSaveName() {
   const name = getPlayerName();
-
-  if (!name) {
-    showToast("名前を入力してください");
-    playerNameInput.focus();
-    return null;
-  }
 
   currentPlayerName = name;
   savePlayerName(name);
@@ -1296,7 +1398,7 @@ function stopCountdown() {
 function cancelCountdownToHome() {
   if (!isCountingDown) return;
 
-  stopCountdown();
+  stopCountdown();GameSound.play('early');
   showScreen("home");
   showToast("カウントダウンを中止しました");
 }
@@ -1323,8 +1425,9 @@ function flashWrongTap() {
 function startCountdown() {
   if (isCountingDown) return;
 
+  GameSound.play('start');
   const name = validateAndSaveName();
-  if (!name) return;
+  activePlay=scoreQueue.capture(name,CLIENT_VERSION);rankingRequest++;try{localStorage.removeItem(RESULT_KEY)}catch(_){}
 
   stopCountdown();
   stopTimer();
@@ -1392,6 +1495,7 @@ function startGame() {
 
 function finishGame(isRetired) {
   if (!isPlaying) return;
+  GameSound.play('end');
 
   const actualSeconds = getElapsedSeconds();
   const wrongPenaltySeconds = totalWrongCount * WRONG_PENALTY_SECONDS;
@@ -1408,6 +1512,8 @@ function finishGame(isRetired) {
     submitId,
     isRetired,
     playerName: currentPlayerName,
+    play: activePlay,
+    submissionState:isRetired?"retired":!currentPlayerName?"guest":activePlay?"pending":"failed",
     actualSeconds,
     wrongCount: totalWrongCount,
     wrongPenaltySeconds,
@@ -1424,11 +1530,8 @@ function finishGame(isRetired) {
     saveClearScore(finalSeconds);
   }
 
-  showResult(lastResult);
-
-  if (!isRetired) {
-    submitScoreToSupabase(lastResult);
-  }
+  saveResultSnapshot();showResult(lastResult);void loadResultRanking(lastResult);
+  if (!isRetired && lastResult.playerName && lastResult.play) void submitScoreToSupabase(lastResult);
 }
 
 function advanceTargetOrFinish() {
@@ -1464,10 +1567,12 @@ function handleBoardTap(event) {
 
   if (cell.emoji === getCurrentTarget()) {
     cell.cleared = true;
+    if(getRemainingCount()>0)GameSound.play('ok');else if(targetIndex+1<targetOrder.length)GameSound.play('milestone');
     advanceTargetOrFinish();
     return;
   }
 
+  GameSound.play('hit');
   totalWrongCount += 1;
   currentTargetWrongCount += 1;
 
@@ -1477,6 +1582,7 @@ function handleBoardTap(event) {
 
 function useHint() {
   if (!isPlaying) return;
+  GameSound.play('hint');
 
   hintUseCount += 1;
   hintPenaltySeconds += HINT_PENALTY_SECONDS;
@@ -1522,66 +1628,21 @@ function showResult(result) {
     setSubmitStatus("送信中...", "submit-warn");
   }
 
-  showScreen("result");
+  renderSubmissionStatus(result);showScreen("result");
 }
 
 function isCurrentResult(result) {
   return lastResult === result && result && result.submitId === submitSequence;
 }
 
-async function submitScoreToSupabase(result) {
-  if (!isCurrentResult(result)) return;
-
-  setSubmitStatus("送信中...", "submit-warn");
-
-  try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_score`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_PUBLISHABLE_KEY,
-        "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
-      },
-      body: JSON.stringify({
-        p_display_name: result.playerName,
-        p_game_slug: GAME_SLUG,
-        p_score: result.scoreForRanking,
-        p_client_version: CLIENT_VERSION,
-      }),
-    });
-
-    const data = await response.json().catch(() => null);
-
-    if (!isCurrentResult(result)) return;
-
-    if (!response.ok) {
-      const message = data && data.message ? data.message : "送信に失敗しました";
-      throw new Error(message);
-    }
-
-    const row = Array.isArray(data) ? data[0] : data;
-
-    if (row && row.accepted === false) {
-      setSubmitStatus("送信できませんでした", "submit-ng");
-      return;
-    }
-
-    const isNewBest = Boolean(row && row.is_new_best);
-    const playCount = row && typeof row.result_play_count === "number" ? row.result_play_count : null;
-
-    if (isNewBest) {
-      setSubmitStatus(playCount ? `送信完了（ベスト更新・${playCount}回目）` : "送信完了（ベスト更新）", "submit-ok");
-    } else {
-      setSubmitStatus(playCount ? `送信完了（${playCount}回目）` : "送信完了", "submit-ok");
-    }
-  } catch (error) {
-    console.error(error);
-
-    if (!isCurrentResult(result)) return;
-
-    setSubmitStatus("送信失敗（通信または設定を確認）", "submit-ng");
-  }
-}
+async function callRpc(fn,payload){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json',apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`},body:JSON.stringify(payload)});const data=await response.json().catch(()=>null);if(!response.ok)throw Object.assign(new Error(fn+' '+response.status),{code:data?.code});return data;}finally{clearTimeout(timer);}}
+function saveResultSnapshot(){if(!lastResult)return;try{localStorage.setItem(RESULT_KEY,JSON.stringify(lastResult));}catch(_){}}
+function renderSubmissionStatus(result){const labels={retired:'送信なし（リタイア）',guest:'名前なしでプレイしたため、この結果はランキングへ送信しません。',pending:'記録は送信待ちです。同じ記録を再送できます。',sending:'送信中...',submitted:'送信完了',failed:'送信に失敗しました。今回の結果は保持されています。',rejected:'記録を送信できませんでした。今回の結果は保持されています。'};setSubmitStatus(labels[result.submissionState]||labels.failed,result.submissionState==='submitted'?'submit-ok':'submit-warn');document.getElementById('submission-retry').hidden=!(result.play&&['pending','failed'].includes(result.submissionState));document.getElementById('pending-retry-home').hidden=scoreQueue.list().length===0;}
+async function submitScoreToSupabase(result){if(!isCurrentResult(result)||result.isRetired||!result.playerName||!result.play||result.submissionState==='submitted')return;try{scoreQueue.enqueue(result.play,result.scoreForRanking,result);await scoreQueue.drain();}catch(_){if(isCurrentResult(result)){result.submissionState='failed';saveResultSnapshot();renderSubmissionStatus(result);}}}
+async function loadResultRanking(result=lastResult){if(!result)return;const request=++rankingRequest,status=document.getElementById('ranking-read-status'),list=document.getElementById('result-ranking');status.textContent='読み込み中...';list.replaceChildren();try{const raw=await callRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:30});if(!isCurrentResult(result)||request!==rankingRequest)return;const rows=Array.isArray(raw)?raw:[];list.replaceChildren(...rows.slice(0,30).map((r,i)=>{const li=document.createElement('li');li.value=Number(r.rank_no??i+1);const name=document.createElement('span'),score=document.createElement('strong');name.textContent=String(r.display_name??r.player_name??'');score.textContent=formatSeconds(Number(r.score??r.best_score??0)/SCORE_SCALE);li.append(name,document.createTextNode('：'),score);return li;}));status.textContent=rows.length?'':'まだ記録がありません。';}catch(_){if(!isCurrentResult(result)||request!==rankingRequest)return;status.textContent='ランキングを取得できませんでした。「ランキングを再取得」で再試行できます。';}}
+function restoreResultSnapshot(){let saved;try{saved=JSON.parse(localStorage.getItem(RESULT_KEY)||'null')}catch(_){return false;}if(!saved||typeof saved.playerName!=='string'||typeof saved.isRetired!=='boolean'||!Number.isInteger(saved.submitId)||!Number.isInteger(saved.scoreForRanking)||saved.scoreForRanking<0||!['actualSeconds','finalSeconds','wrongCount','wrongPenaltySeconds','hintUseCount','hintPenaltySeconds'].every(k=>Number.isFinite(saved[k])&&saved[k]>=0))return false;lastResult=saved;submitSequence=saved.submitId;showResult(saved);void loadResultRanking(saved);return true;}
+let queueStorage=null;try{queueStorage=localStorage;}catch(_){}
+scoreQueue=CommonScoreQueue.createScoreQueue({gameSlug:GAME_SLUG,storage:queueStorage,send:p=>callRpc('submit_score_once_shared_v1',p),onChange(item,receipt){document.getElementById('pending-retry-home').hidden=scoreQueue.list().length===0;if(!lastResult||lastResult.play?.id!==item.id)return;lastResult.submissionState=item.state==='pending'&&lastResult.submissionState==='sending'?'failed':item.state;saveResultSnapshot();renderSubmissionStatus(lastResult);if(receipt)void loadResultRanking(lastResult);}});
 
 function buildGameShareText() {
   return [
@@ -1667,7 +1728,11 @@ function closeRuleModal() {
 }
 
 bindTap(startButton, startCountdown);
-bindTap(retryButton, startCountdown);
+bindTap(retryButton,()=>{updateBestScoreView();showScreen("home");});
+bindTap(document.getElementById("ranking-retry"),()=>{void loadResultRanking();});
+bindTap(document.getElementById("submission-retry"),()=>{void scoreQueue.drain();});
+bindTap(document.getElementById("pending-retry-home"),()=>{void scoreQueue.drain();});
+playerNameInput.addEventListener("input",()=>savePlayerName(getPlayerName()));
 
 bindTap(homeButton, () => {
   updateBestScoreView();
@@ -1723,7 +1788,8 @@ installMobileGuards();
 playerNameInput.value = loadPlayerName();
 
 updateBestScoreView();
-showScreen("home");
+if(!restoreResultSnapshot())showScreen("home");
+document.getElementById("pending-retry-home").hidden=scoreQueue.list().length===0;void scoreQueue.drain();
 
   </script>
 </body>
