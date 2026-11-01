@@ -98,5 +98,6 @@
   "İpucu: {0} (+{1} sn)",
   "Sonuç süresi: {0}",
   "Kopyalanamadı",
-  "Dil"
+  "Dil",
+  "Bu cihaz kaydı saklayamıyor. Sonucu kaybetmemek için sayfayı yenilemeyin; kayıt mümkün olduğunda yeniden deneyin."
 ]

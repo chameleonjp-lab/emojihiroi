@@ -98,5 +98,6 @@
   "Pistas: {0} (+{1} s)",
   "Tiempo final: {0}",
   "No se pudo copiar",
-  "Idioma"
+  "Idioma",
+  "Este dispositivo no puede guardar el registro. Para no perder el resultado, no recargues; reintenta cuando se pueda guardar."
 ]
