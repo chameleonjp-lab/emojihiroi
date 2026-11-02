@@ -6,7 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no">
   <title>絵文字拾い</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="絵文字拾い">
+  <meta property="og:url" content="https://chameleonjp.codeberg.page/emojihiroi/">
+  <meta property="og:description" content="8×8の盤面から、お題と同じ絵文字を8個ずつ拾うタイムアタック。">
+  <meta property="og:image" content="https://chameleonjp-lab.github.io/emojihiroi/assets/social-preview.png">
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="絵文字拾い：実ゲームの8種類各8個の顔絵文字と、濃茶色・クリーム色の8×8盤面を再構成した紹介画像">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://chameleonjp-lab.github.io/emojihiroi/assets/social-preview.png">
+  <meta name="twitter:image:alt" content="お題と同じ顔を探す、絵文字拾いの8×8盤面">
   <style>
+#pending-retry-home[hidden],#submission-retry[hidden]{display:none}
 :root {
   --bg: #f5f0ff;
   --card: #ffffff;
@@ -1748,6 +1759,7 @@ function buildGameShareText() {
     return [
         t(GAME_TITLE),
         t(GAME_DESCRIPTION),
+        "#絵文字拾い #ゲーム制作",
         getGameUrl(),
     ].join("\n");
 }
@@ -1765,7 +1777,8 @@ function buildResultShareText() {
             t("\u30D2\u30F3\u30C8\uFF1A{0}\u56DE", lastResult.hintUseCount),
             "",
             t("8\u00D78\u306E\u7D75\u6587\u5B57\u62FE\u3044\u306B\u6311\u6226\uFF01"),
-            getGameUrl(),
+            "#絵文字拾い #ゲーム制作",
+        getGameUrl(),
         ].join("\n");
     }
     return [
@@ -1777,6 +1790,7 @@ function buildResultShareText() {
         t("\u6700\u7D42\u79D2\u6570\uFF1A{0}", formatSeconds(lastResult.finalSeconds)),
         "",
         t("8\u00D78\u306E\u7D75\u6587\u5B57\u62FE\u3044\u306B\u6311\u6226\uFF01"),
+        "#絵文字拾い #ゲーム制作",
         getGameUrl(),
     ].join("\n");
 }
