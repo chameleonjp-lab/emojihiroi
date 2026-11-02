@@ -18,3 +18,8 @@
 - 限定作業branch pushで検証のみ。Pages artifact/deployはmain push限定、既存runner/権限/公開設定は変更しない。
 - 本人マージ後に配信commit/PNG/OGと実機共有を確認。公開Xカード/Codeberg更新/本番機能/実機は別未確認。
 - 不具合時は差分revert PR。既存名前・成績・設定を消去しない。
+
+## 最初のbrowser試験の是正
+head2025b7a CI41433098379ではhome全15言語/縦横30枚完了後、結果画面からホーム専用の言語selectを実操作しようとし不可視timeout。製品X/訳文不具合ではなくfixtureの手順誤り。homeは実selectOptionを維持、結果fixtureは同じ既存selectへ値設定/changeイベントを送って言語変更handlerを通し、gameLocale.language()で反映を確認する。実機の結果画面に言語selectがあるとはしない。受入閾値/可視assert/通信遮断は緩和しない。
+
+初回Chromium home画像でpending0にもかかわらず再送操作が可視と判明。汎用buttonレイアウトがhidden表示を上書きするため、ホーム未送信/結果再送の2 IDの[hidden]時だけdisplay:noneを追加。CSS RED→GREEN、browserでhidden真不可視/false可視/真復帰を確認しクリックしない。正規再送判定・handler・RPCは変更しない。

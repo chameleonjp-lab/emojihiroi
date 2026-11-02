@@ -30,9 +30,14 @@ try{
  await home.evaluate(e=>e.style.cssText='position:fixed;top:-8px;left:20px;width:180px;z-index:9999');await assert.rejects(()=>visible(page,'#share-game-button'));await home.evaluate(e=>e.style.cssText='');await visible(page,'#share-game-button');
  for(const phase of ['home','clear','retire']){
   if(phase!=='home'){await page.evaluate(retired=>{localStorage.setItem('emojihiroi:last-result:v1',JSON.stringify({playerName:'',play:null,isRetired:retired,submitId:1,actualSeconds:12.34,wrongCount:1,wrongPenaltySeconds:5,hintUseCount:1,hintPenaltySeconds:45,finalSeconds:62.34,scoreForRanking:6234,submissionState:retired?'retired':'guest'}));if(!__shareTest.restoreResultSnapshot())throw Error('fixture restore failed')},phase==='retire');assert.equal(await page.locator('#result-screen').isVisible(),true);assert.equal(await page.evaluate(()=>__shareTest.state().lastResult.play),null);}
+  const retry=phase==='home'?'#pending-retry-home':'#submission-retry';
+  assert.equal(await page.locator(retry).evaluate(e=>e.hidden),true);assert.equal(await page.locator(retry).isVisible(),false);
+  await page.locator(retry).evaluate(e=>e.hidden=false);assert.equal(await page.locator(retry).isVisible(),true);await page.locator(retry).evaluate(e=>e.hidden=true);
   const selector=phase==='home'?'#share-game-button':'#share-result-button';
   for(const [lang,catalog]of Object.entries(catalogs)){
-   await page.selectOption('#languageSelect',lang);
+   if(phase==='home')await page.selectOption('#languageSelect',lang);
+   else await page.evaluate(lang=>{const select=document.getElementById('languageSelect');select.value=lang;select.dispatchEvent(new Event('change',{bubbles:true}));},lang);
+   assert.equal(await page.evaluate(()=>gameLocale.language()),lang);
    const frozen=await page.evaluate(()=>__shareTest.state());
    for(const viewport of [{width:402,height:874},{width:874,height:402}]){
     await page.setViewportSize(viewport);await visible(page,selector);await visible(page,`#${phase==='home'?'home':'result'}-screen .common-ranking-link`);
